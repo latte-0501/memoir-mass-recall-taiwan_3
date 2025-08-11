@@ -1,0 +1,2304 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台灣大罷免運動始末</title>
+    <meta name="description" content="台灣大罷免運動始末 - 包含 18 個時間節點的個人回憶錄">
+    <meta name="author" content="台灣大罷免運動始末">
+    <meta name="generator" content="MemoirFlow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="台灣大罷免運動始末">
+    <meta property="og:description" content="台灣大罷免運動始末 - 包含 18 個時間節點的個人回憶錄">
+    
+    <!-- PWA Support -->
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+    
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/umd/lucide.js"></script>
+
+    <!-- 使用 Lucide 官方 CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            /* 防止手機上的選擇高亮 */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            /* 防止手機上的點擊延遲 */
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #000000 50%, #1a1a2e 100%);
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+            /* 防止手機上的橡皮筋效果 */
+            overscroll-behavior: none;
+        }
+
+        .container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #000000 50%, #1a1a2e 100%);
+            overflow: hidden;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* 載入畫面 */
+        .loading-screen {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #1a1a2e, #000000);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .loading-animation {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 頂部控制列 */
+        .header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 40;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.9) 70%, transparent 100%);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(107, 114, 128, 0.3);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            gap: 8px;
+            min-height: 60px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .control-btn {
+            width: 32px;
+            height: 32px;
+            background: rgba(31, 41, 55, 0.8);
+            border: 1px solid rgba(107, 114, 128, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .control-btn:hover {
+            background: rgba(55, 65, 81, 0.8);
+            transform: scale(1.05);
+        }
+
+        .title-area {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            min-width: 0;
+            max-width: 300px;
+        }
+
+        /* 手機版標題區域優化 */
+        .mobile-title {
+            display: none;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .title-box {
+            background: linear-gradient(to right, rgba(31, 41, 55, 0.8), rgba(55, 65, 81, 0.8));
+            backdrop-filter: blur(4px);
+            border-radius: 20px;
+            padding: 8px 16px;
+            border: 1px solid rgba(107, 114, 128, 0.3);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .title-text {
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .nav-btn {
+            width: 28px;
+            height: 28px;
+            background: rgba(55, 65, 81, 0.8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(107, 114, 128, 0.3);
+        }
+
+        .nav-btn:hover:not(.disabled) {
+            background: rgba(75, 85, 99, 0.8);
+        }
+
+        .nav-btn.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .event-counter {
+            color: white;
+            font-size: 12px;
+            white-space: nowrap;
+            padding: 4px 12px;
+            text-align: center;
+            min-width: 50px;
+        }
+
+        .media-counter {
+            color: rgb(156, 163, 175);
+            font-size: 12px;
+            white-space: nowrap;
+            background: rgba(31, 41, 55, 0.6);
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(107, 114, 128, 0.3);
+        }
+
+        /* 字幕區域 - 支援觸控滑動 */
+        .subtitle-area {
+            padding: 12px 16px;
+            background: linear-gradient(to right, rgba(31, 41, 55, 0.6), rgba(55, 65, 81, 0.6));
+            backdrop-filter: blur(4px);
+            border-radius: 12px;
+            margin: 0 16px 12px 16px;
+            border: 1px solid rgba(107, 114, 128, 0.2);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            /* 支援觸控滑動 */
+            touch-action: pan-x;
+            cursor: grab;
+        }
+
+        .subtitle-area:active {
+            cursor: grabbing;
+        }
+
+        .subtitle-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .event-date {
+            color: rgb(209, 213, 219);
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .event-title {
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .subtitle-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch {
+            width: 40px;
+            height: 20px;
+            background: #6b7280;
+            border-radius: 10px;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-switch.active {
+            background: #3b82f6;
+        }
+
+        .toggle-knob {
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+        }
+
+        .toggle-switch.active .toggle-knob {
+            transform: translateX(20px);
+        }
+
+        .event-description {
+            color: rgb(229, 231, 235);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        /* 滑動提示 */
+        .swipe-hint {
+            display: none;
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(59, 130, 246, 0.8);
+            color: white;
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            z-index: 10;
+            animation: fadeInOut 3s ease-in-out;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            20%, 80% { opacity: 1; }
+        }
+
+        /* 主要內容區域 - 添加淡入淡出動畫 */
+        .main-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding-top: 120px;
+            transition: all 0.5s ease;
+            /* 支援觸控滑動 */
+            touch-action: pan-x;
+        }
+
+        .main-content.transitioning {
+            opacity: 0.7;
+            transform: scale(0.98);
+        }
+
+        .main-content.grid-mode {
+            padding-top: 80px;
+        }
+
+        .media-area {
+            flex: 1;
+            position: relative;
+            padding: 8px 12px;
+            min-height: 0;
+            /* 支援觸控滑動 */
+            touch-action: pan-x;
+        }
+
+        /* 媒體輪播模式 */
+        .media-carousel {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            gap: 16px;
+        }
+
+        .main-media {
+            flex: 1;
+            position: relative;
+            background: linear-gradient(135deg, #1f2937, #000000);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(107, 114, 128, 0.3);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+            transition: all 0.5s ease;
+        }
+
+        .main-media.transitioning {
+            opacity: 0.5;
+            transform: scale(0.95);
+        }
+
+        .media-display {
+            position: absolute;
+            inset: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .media-display img,
+        .media-display video {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .media-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            background: rgba(31, 41, 55, 0.9);
+            border: 1px solid rgba(107, 114, 128, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(4px);
+            z-index: 20;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .media-nav-btn:hover:not(.disabled) {
+            background: rgba(55, 65, 81, 0.9);
+        }
+
+        .media-nav-btn.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .media-nav-btn.prev {
+            left: 16px;
+        }
+
+        .media-nav-btn.next {
+            right: 16px;
+        }
+
+        .media-counter-display {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(17, 24, 39, 0.9);
+            border: 1px solid rgba(107, 114, 128, 0.5);
+            color: white;
+            font-size: 12px;
+            padding: 8px 12px;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+            z-index: 20;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        /* 縮圖列表 - 改善為垂直中央排列 */
+        .thumbnail-list {
+            width: 120px;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .thumbnail-container {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(31, 41, 55, 0.8) 0%, rgba(55, 65, 81, 0.6) 50%, rgba(31, 41, 55, 0.8) 100%);
+            border-radius: 12px;
+            border: 1px solid rgba(107, 114, 128, 0.2);
+            padding: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .thumbnail-scroll {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            height: 100%;
+            overflow-y: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            
+            /* 垂直中央對齊 */
+            justify-content: center;
+            min-height: 100%;
+        }
+
+        .thumbnail-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* 當有超過3個縮圖時，改為從上開始排列 */
+        .thumbnail-scroll.many-items {
+            justify-content: flex-start;
+            padding-top: 20px;
+        }
+
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid rgba(107, 114, 128, 0.5);
+            transition: all 0.3s;
+            position: relative;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            flex-shrink: 0;
+        }
+
+        .thumbnail:hover {
+            border-color: rgba(107, 114, 128, 0.7);
+            transform: scale(1.05);
+        }
+
+        .thumbnail.active {
+            border-color: #3b82f6;
+            transform: scale(1.1);
+            box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+        }
+
+        .thumbnail img,
+        .thumbnail video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .thumbnail-index {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+            color: white;
+            font-size: 10px;
+            text-align: center;
+            padding: 2px;
+        }
+
+        /* 網格模式 */
+        .media-grid {
+            width: 100%;
+            height: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #1f2937 0%, #000000 50%, #1f2937 100%);
+            transition: all 0.3s;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .grid-item {
+            aspect-ratio: 1;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid rgba(107, 114, 128, 0.5);
+            transition: all 0.3s;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .grid-item:hover {
+            border-color: rgba(107, 114, 128, 0.7);
+            transform: scale(1.02);
+        }
+
+        .grid-item.active {
+            border-color: #3b82f6;
+            transform: scale(1.05);
+            box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
+        }
+
+        .grid-item img,
+        .grid-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .grid-item-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(17, 24, 39, 0.9) 0%, rgba(55, 65, 81, 0.7) 70%, transparent 100%);
+            padding: 8px;
+            border-top: 1px solid rgba(107, 114, 128, 0.3);
+        }
+
+        .grid-item-name {
+            color: white;
+            font-size: 10px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* 全螢幕查看器 */
+        .media-viewer {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .viewer-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 60;
+            width: 48px;
+            height: 48px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            backdrop-filter: blur(4px);
+        }
+
+        .viewer-close:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .viewer-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 32px;
+            box-sizing: border-box;
+        }
+
+        .viewer-content img{
+            width: 100%;
+            object-fit: contain;
+        }
+
+        .viewer-media {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+        }
+
+        /* 手機版全螢幕查看器優化 - 完全修復 */
+        @media (max-width: 768px) {
+            .viewer-content {
+                padding: 16px !important;
+                width: 100vw !important;
+                height: 100vh !important;
+                box-sizing: border-box !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+            
+            .viewer-content img{
+                max-width: 100%;
+                max-height: 100vh;
+            }
+
+            .viewer-media {
+                max-width: calc(100vw - 32px) !important;
+                max-height: calc(100vh - 80px) !important;
+                width: auto !important;
+                height: auto !important;
+                object-fit: contain !important;
+                display: block !important;
+                margin: auto !important;
+            }
+            
+            .viewer-close {
+                top: 16px !important;
+                right: 16px !important;
+                width: 40px !important;
+                height: 40px !important;
+                z-index: 70 !important;
+                position: fixed !important;
+            }
+            
+            /* 強制覆蓋任何其他樣式 */
+            .media-viewer img {
+                max-width: calc(100vw - 32px) !important;
+                max-height: calc(100vh - 80px) !important;
+                width: auto !important;
+                height: auto !important;
+                object-fit: contain !important;
+            }
+            
+            .media-viewer video {
+                max-width: calc(100vw - 32px) !important;
+                max-height: calc(100vh - 80px) !important;
+                width: auto !important;
+                height: auto !important;
+                object-fit: contain !important;
+            }
+        }
+
+        /* 設定選單 */
+        .settings-menu {
+            position: absolute;
+            top: 48px;
+            left: 0;
+            background: rgba(17, 24, 39, 0.95);
+            border: 1px solid rgba(107, 114, 128, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            backdrop-filter: blur(12px);
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+            z-index: 50;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            color: white;
+            font-size: 12px;
+        }
+
+        .menu-item:last-child {
+            margin-bottom: 0;
+        }
+
+        /* 網格選項開關 */
+        .settings-menu .menu-item:first-child {
+            display: none;
+        }
+
+        .menu-button {
+            width: 100%;
+            background: #22c55e;
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .menu-button:hover {
+            background: #16a34a;
+        }
+
+        .menu-button.skip {
+            background: #f97316;
+        }
+
+        .menu-button.skip:hover {
+            background: #ea580c;
+        }
+
+        /* 時間軸導航面板 - 重新設計質感 */
+        .timeline-panel {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 60;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(8px);
+        }
+
+        .timeline-content {
+            background: linear-gradient(135deg, rgba(17, 24, 39, 0.95) 0%, rgba(31, 41, 55, 0.9) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 20px;
+            padding: 32px;
+            min-width: 600px;
+            max-width: 900px;
+            max-height: 85vh;
+            overflow-y: auto;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1);
+            position: relative;
+        }
+
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.5), rgba(147, 51, 234, 0.3), rgba(59, 130, 246, 0.5));
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .timeline-header {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding-right: 60px;
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .timeline-title {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .timeline-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            z-index: 100;
+            width: 40px;
+            height: 40px;
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #f87171;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(4px);
+        }
+
+        .timeline-close:hover {
+            background: rgba(239, 68, 68, 0.3);
+            border-color: rgba(239, 68, 68, 0.5);
+            transform: scale(1.05);
+        }
+
+        .timeline-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            position: relative;
+        }
+
+        .timeline-list::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #3b82f6, #8b5cf6, #3b82f6);
+            border-radius: 1px;
+        }
+
+        .timeline-item {
+            background: linear-gradient(135deg, rgba(31, 41, 55, 0.8) 0%, rgba(55, 65, 81, 0.6) 100%);
+            border: 1px solid rgba(107, 114, 128, 0.3);
+            border-radius: 16px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            margin-left: 50px;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -42px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background: #3b82f6;
+            border: 3px solid rgba(17, 24, 39, 0.9);
+            border-radius: 50%;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+            transition: all 0.3s;
+        }
+
+        .timeline-item:hover {
+            background: linear-gradient(135deg, rgba(55, 65, 81, 0.9) 0%, rgba(75, 85, 99, 0.7) 100%);
+            border-color: rgba(59, 130, 246, 0.5);
+            transform: translateX(8px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+
+        .timeline-item:hover::before {
+            background: #60a5fa;
+            transform: translateY(-50%) scale(1.2);
+            box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.4);
+        }
+
+        .timeline-item.active {
+            border-color: #3b82f6;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(147, 51, 234, 0.1) 100%);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+            transform: translateX(12px);
+        }
+
+        .timeline-item.active::before {
+            background: #fbbf24;
+            box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.4);
+            }
+            50% { 
+                box-shadow: 0 0 0 8px rgba(251, 191, 36, 0.2);
+            }
+        }
+
+        .timeline-item-date {
+            color: #60a5fa;
+            font-size: 12px;
+            margin-bottom: 6px;
+            font-weight: 500;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .timeline-item-title {
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .timeline-item-description {
+            color: rgb(209, 213, 219);
+            font-size: 13px;
+            line-height: 1.5;
+            opacity: 0.9;
+        }
+
+        /* 使用說明面板 */
+        .help-panel {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 60;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .help-content {
+            background: rgba(17, 24, 39, 0.95);
+            border: 1px solid rgba(107, 114, 128, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+        }
+
+        .help-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .help-title {
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .help-close {
+            width: 32px;
+            height: 32px;
+            background: rgba(55, 65, 81, 0.8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .help-close:hover {
+            background: rgba(75, 85, 99, 0.8);
+        }
+
+        .help-section {
+            margin-bottom: 20px;
+        }
+
+        .help-section h3 {
+            color: rgb(96, 165, 250);
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .help-section p {
+            color: rgb(209, 213, 219);
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .help-shortcuts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 8px;
+        }
+
+        .help-shortcut {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: rgb(209, 213, 219);
+            font-size: 12px;
+        }
+
+        .help-key {
+            background: rgba(55, 65, 81, 0.8);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            color: white;
+        }
+
+        /* 響應式設計 - 手機版優化 */
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 8px 12px;
+                min-height: 56px;
+            }
+            
+            .control-btn {
+                width: 28px;
+                height: 28px;
+            }
+
+            /* 隱藏桌面版標題，顯示手機版標題 */
+            .title-area {
+                display: none;
+            }
+
+            .mobile-title {
+                display: block;
+            }
+
+            /* 調整字幕區域在手機版的顯示 */
+            .subtitle-area {
+                margin: 0 8px 8px 8px;
+                padding: 10px 12px;
+            }
+
+            .event-title {
+                font-size: 13px;
+            }
+
+            .event-date {
+                font-size: 11px;
+            }
+
+            .event-description {
+                font-size: 11px;
+            }
+
+            /* 顯示滑動提示 */
+            .swipe-hint {
+                display: block;
+            }
+
+            .media-carousel {
+                flex-direction: column;
+            }
+
+            .thumbnail-list {
+                width: 100%;
+                height: 100px;
+            }
+
+            .thumbnail-container {
+                width: 100%;
+                height: 100%;
+                padding: 8px;
+            }
+
+            .thumbnail-scroll {
+                flex-direction: row;
+                overflow-x: auto;
+                overflow-y: hidden;
+                justify-content: flex-start;
+            }
+
+            .thumbnail-scroll.many-items {
+                justify-content: flex-start;
+                padding-top: 0;
+                padding-left: 20px;
+            }
+
+            .thumbnail {
+                width: 60px;
+                height: 60px;
+                flex-shrink: 0;
+            }
+
+            .grid-container {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 12px;
+            }
+
+            .timeline-content {
+                padding: 20px;
+                max-width: 95vw;
+                min-width: 320px;
+            }
+
+            .timeline-item {
+                margin-left: 30px;
+                padding: 16px;
+            }
+
+            .timeline-item::before {
+                left: -22px;
+                width: 8px;
+                height: 8px;
+            }
+
+            .timeline-list::before {
+                left: 12px;
+            }
+
+            /* 手機版媒體導航按鈕優化 */
+            .media-nav-btn {
+                width: 40px;
+                height: 40px;
+            }
+
+            .media-nav-btn.prev {
+                left: 8px;
+            }
+
+            .media-nav-btn.next {
+                right: 8px;
+            }
+        }
+
+        /* 動畫效果增強 */
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        .fade-out {
+            animation: fadeOut 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px) scale(0.95); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
+        }
+
+        @keyframes fadeOut {
+            from { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
+            to { 
+                opacity: 0; 
+                transform: translateY(-20px) scale(0.95); 
+            }
+        }
+
+        /* 內容切換動畫 */
+        .content-transition {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .content-transition.fade-out {
+            opacity: 0;
+            transform: scale(0.98) translateY(10px);
+        }
+
+        .content-transition.fade-in {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        .typewriter-cursor {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* 滑動視覺回饋 */
+        .swipe-feedback {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 24px;
+            color: rgba(59, 130, 246, 0.8);
+            z-index: 30;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .swipe-feedback.left {
+            left: 20px;
+        }
+
+        .swipe-feedback.right {
+            right: 20px;
+        }
+
+        .swipe-feedback.show {
+            transform: translateY(-50%) scale(1.2);
+            opacity: 1;
+        }
+
+        /* 無障礙支援 */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 載入畫面 -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-animation"></div>
+        <div style="color: white; font-size: 18px; margin-bottom: 10px;">正在載入回憶錄</div>
+        <div style="color: #bdc3c7; font-size: 14px;">台灣大罷免運動始末</div>
+    </div>
+
+    <!-- 主應用程式 -->
+    <div class="container" id="app">
+        <!-- 標題列 -->
+        <div class="header">
+            <div class="header-content">
+                <!-- 左側控制按鈕 -->
+                <div class="header-left">
+                    <!-- 設定按鈕 -->
+                    <div class="control-btn" id="settingsBtn" title="設定選單">
+                        <i data-lucide="settings" style="width: 14px; height: 14px;"></i>
+                    </div>
+                    
+                    <!-- 時間軸按鈕 -->
+                    <div class="control-btn" id="timelineBtn" title="時間軸導航" style="background: rgba(59, 130, 246, 0.8);">
+                        <i data-lucide="calendar" style="width: 14px; height: 14px;"></i>
+                    </div>
+                </div>
+                
+                <!-- 桌面版標題 -->
+                <div class="title-area">
+                    <div class="title-box">
+                        <div class="title-text">台灣大罷免運動始末</div>
+                    </div>
+                </div>
+
+                <!-- 手機版標題 -->
+                <div class="mobile-title">台灣大罷免運動始末</div>
+                
+                <!-- 右側導航 -->
+                <div class="header-right">
+                    <div class="nav-btn" id="prevEventBtn" title="上一個時間節點">
+                        <i data-lucide="chevron-left" style="width: 12px; height: 12px;"></i>
+                    </div>
+                    <div class="event-counter">
+                        <span id="currentEventNum">1</span>/<span id="totalEvents">1</span>
+                    </div>
+                    <div class="nav-btn" id="nextEventBtn" title="下一個時間節點">
+                        <i data-lucide="chevron-right" style="width: 12px; height: 12px;"></i>
+                    </div>
+                    <div class="media-counter">
+                        <span id="mediaCount">0</span>媒體
+                    </div>
+                </div>
+            </div>
+
+            <!-- 字幕區域 -->
+            <div class="subtitle-area content-transition" id="subtitleArea">
+                <div class="subtitle-header">
+                    <div class="event-date" id="eventDate">2024年1月1日</div>
+                    <div class="event-title" id="eventTitle">標題</div>
+                    <div class="subtitle-toggle">
+                        <span style="color: white; font-size: 12px;">字幕</span>
+                        <div class="toggle-switch active" id="subtitleToggle">
+                            <div class="toggle-knob"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="event-description" id="eventDescription">描述內容...</div>
+                <!-- 滑動提示 -->
+                <!-- <div class="swipe-hint">← 滑動切換日期 →</div> -->
+            </div>
+        </div>
+
+        <!-- 主要內容區域 -->
+        <div class="main-content content-transition" id="mainContent">
+            <div class="media-area">
+                <!-- 滑動視覺回饋 -->
+                <!-- <div class="swipe-feedback left" id="swipeFeedbackLeft">
+                    <i data-lucide="chevron-left" style="width: 32px; height: 32px;"></i>
+                </div>
+                <div class="swipe-feedback right" id="swipeFeedbackRight">
+                    <i data-lucide="chevron-right" style="width: 32px; height: 32px;"></i>
+                </div> -->
+
+                <!-- 輪播模式 -->
+                <div class="media-carousel" id="mediaCarousel">
+                    <div class="main-media content-transition" id="mainMedia">
+                        <div class="media-display" id="mediaDisplay">
+                            <!-- 媒體內容將在這裡動態插入 -->
+                        </div>
+                        
+                        <!-- 導航按鈕 -->
+                        <div class="media-nav-btn prev" id="prevMediaBtn">
+                            <i data-lucide="chevron-left" style="width: 20px; height: 20px;"></i>
+                        </div>
+                        <div class="media-nav-btn next" id="nextMediaBtn">
+                            <i data-lucide="chevron-right" style="width: 20px; height: 20px;"></i>
+                        </div>
+                        
+                        <!-- 媒體計數器 -->
+                        <div class="media-counter-display" id="mediaCounterDisplay">
+                            1 / 1
+                        </div>
+                    </div>
+                    
+                    <!-- 縮圖列表 -->
+                    <div class="thumbnail-list">
+                        <div class="thumbnail-container">
+                            <div class="thumbnail-scroll" id="thumbnailScroll">
+                                <!-- 縮圖將在這裡動態插入 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 網格模式 -->
+                <div class="media-grid hidden" id="mediaGrid">
+                    <div class="grid-container" id="gridContainer">
+                        <!-- 網格項目將在這裡動態插入 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 設定選單 -->
+        <div class="settings-menu hidden" id="settingsMenu">
+            <div class="menu-item">
+                <span>網格檢視</span>
+                <div class="toggle-switch" id="gridToggle">
+                    <div class="toggle-knob"></div>
+                </div>
+            </div>
+            
+            <button class="menu-button" id="helpBtn">
+                <i data-lucide="help-circle" style="width: 14px; height: 14px;"></i>
+                使用說明
+            </button>
+            
+            <button class="menu-button skip hidden" id="skipTypingBtn">
+                <i data-lucide="skip-forward" style="width: 14px; height: 14px;"></i>
+                跳過打字效果
+            </button>
+        </div>
+
+        <!-- 時間軸導航面板 -->
+        <div class="timeline-panel hidden" id="timelinePanel">
+            <div class="timeline-close" id="timelineClose">
+                <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+            </div>
+            <div class="timeline-content fade-in">
+                <div class="timeline-header">
+                    <div class="timeline-title">
+                        <i data-lucide="calendar" style="width: 24px; height: 24px;"></i>
+                        時間軸導航
+                    </div>
+                </div>
+                <div class="timeline-list" id="timelineList">
+                    <!-- 時間軸項目將在這裡動態插入 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 使用說明面板 -->
+        <div class="help-panel hidden" id="helpPanel">
+            <div class="help-content">
+                <div class="help-header">
+                    <div class="help-title">
+                        <i data-lucide="help-circle" style="width: 20px; height: 20px;"></i>
+                        使用說明
+                    </div>
+                    <div class="help-close" id="helpClose">
+                        <i data-lucide="x" style="width: 16px; height: 16px;"></i>
+                    </div>
+                </div>
+                
+                <div class="help-section">
+                    <h3>🎮 基本操作</h3>
+                    <div class="help-shortcuts">
+                        <div class="help-shortcut">
+                            <span class="help-key">←/→</span>
+                            <span>切換時間節點</span>
+                        </div>
+                        <div class="help-shortcut">
+                            <span class="help-key">滑動</span>
+                            <span>在文字區域左右滑動切換日期</span>
+                        </div>
+                        <div class="help-shortcut">
+                            <span class="help-key">點擊</span>
+                            <span>點擊媒體可全螢幕查看</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="help-section">
+                    <h3>👁️ 檢視模式</h3>
+                    <p><strong>輪播模式</strong> - 逐一瀏覽媒體，適合專注欣賞</p>
+                    <p><strong>網格模式</strong> - 一覽所有媒體，適合快速瀏覽</p>
+                    <p><strong>全螢幕模式</strong> - 專注單一媒體，最佳觀看體驗</p>
+                </div>
+
+                <div class="help-section">
+                    <h3>⌨️ 快捷鍵</h3>
+                    <div class="help-shortcuts">
+                        <div class="help-shortcut">
+                            <span class="help-key">G</span>
+                            <span>切換網格模式</span>
+                        </div>
+                        <div class="help-shortcut">
+                            <span class="help-key">ESC</span>
+                            <span>關閉全螢幕/面板</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="help-section">
+                    <h3>📱 手機版功能</h3>
+                    <p>在文字內容區域或媒體區域<strong>左右滑動</strong>可快速切換不同日期的回憶。滑動時會顯示視覺回饋指示方向。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全螢幕媒體查看器 -->
+    <div class="media-viewer hidden" id="mediaViewer">
+        <div class="viewer-close" id="viewerClose">
+            <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+        </div>
+        <div class="viewer-content" id="viewerContent">
+            <!-- 全螢幕媒體內容將在這裡顯示 -->
+        </div>
+    </div>
+
+    <script>
+        // 嵌入回憶錄數據
+        const MEMOIR_DATA = {"id":"20ea6cb4-633b-4ed8-9f4a-5d37f1de6f4b","chineseName":"台灣大罷免運動始末","englishName":"mass-recall-taiwan_3","events":[{"id":"1754291389504","date":"2024-02-06","title":"袁紅冰：中共滲透台灣立法院","description":"當時台灣總統大選、立委選舉塵埃落定，對於台灣民眾認為「選舉結果是互相制衡，制衡才是民主」，袁紅冰2月時表示：「在國民黨長期的洗腦和分化瓦解之下，台灣確實是有一種和平主義的幻想。……所謂的統一台灣，也就是征服自由台灣，是習近平寫進中共暴政的憲法、寫進中共黨章的一個基本國策。中共實際上給台灣就兩個選擇：交出你的人民主權，交出決定自己命運和前途的權利，接受中共暴政強加給你香港化的前景，那麼就可以得到屈辱的所謂『和平』。」","media":[{"id":"ca11a228-dac1-403b-a375-90defb19bbcf","type":"image","filename":"175220014685900_P29762931.webp","originalName":"175220014685900_P29762931.webp","path":"media/1754291389504_ca11a228-dac1-403b-a375-90defb19bbcf.webp","isUrl":false,"url":null}],"order":0},{"id":"1754291482321","date":"2024-04-03","title":"花蓮發生規模7.1強震","description":"2024年花蓮地震（又稱為403花東大地震）發生於當地時間4月3日上午7時58分09秒，震央位於台灣花蓮縣壽豐鄉，芮氏規模7.1，震源深度為19.7公里，並在花蓮縣秀林鄉和平村觀測到中央氣象署地震分級中最大震度6強的地震和麥卡利震度分級中的8（VIII）度，持續搖晃共大約98秒，期間臺灣全島都感受到明顯搖晃。","media":[{"id":"1754291504379","type":"image","filename":"url_1754291504379","originalName":"53643858196_fae8167dd0_b.jpg","path":"https://live.staticflickr.com/65535/53643858196_fae8167dd0_b.jpg","isUrl":true,"url":"https://live.staticflickr.com/65535/53643858196_fae8167dd0_b.jpg"}],"order":1},{"id":"1754291624558","date":"2024-04-27","title":"傅崐萁率國民立院黨團，拜見統戰頭目","description":"傅崐萁罔顧花蓮災情，率團訪問王滬寧，共十七位立委，佔了國民黨五十二席立委近三分之一。除傅崐萁，區域立委包含雙北王鴻薇、羅明才、張智倫、廖先翔，基隆市林沛祥，竹苗地區徐欣瑩、鄭正鈐、邱鎮軍，南投縣游顥、金門縣陳玉珍、連江縣陳雪生，原住民立委有黃仁、鄭天財、盧縣一；不分區則有翁曉玲、林倩綺。同行的還有前國民黨立委張育美。","media":[{"id":"47d5c4a4-ff5a-425c-b972-0c732926bbba","type":"image","filename":"523935988_17887499847316674_5119657940159678143_n.jpg","originalName":"523935988_17887499847316674_5119657940159678143_n.jpg","path":"media/1754291624558_47d5c4a4-ff5a-425c-b972-0c732926bbba.jpg","isUrl":false,"url":null}],"order":2},{"id":"1754291736703","date":"2024-05-28","title":"挾席次優勢, 藍白聯手暴力通過國會擴權法案","description":"立法院職權行使法等法案，下午四點多三讀通過。舉手表決過程中，藍白兩黨挾著人數優勢，讓法案闖關。民進黨立委批評號稱國會改革的法案，卻是黑箱、程序不正義，沒收民主、無限擴權。","media":[{"id":"1754291739621","type":"image","filename":"url_1754291739621","originalName":"1200x800_wmky_049912701131_202405280135000000.jpg","path":"https://imgcdn.cna.com.tw/www/WebPhotos/1024/20240528/1200x800_wmky_049912701131_202405280135000000.jpg","isUrl":true,"url":"https://imgcdn.cna.com.tw/www/WebPhotos/1024/20240528/1200x800_wmky_049912701131_202405280135000000.jpg"}],"order":3},{"id":"1754292021057","date":"2024-11-14","title":"陳玉珍提出離島建設條例","description":"台灣經濟民主連合與台灣公民陣線10月30日在立法院群賢樓門口召開記者會，質疑陳玉珍等人所提離島建設條例修正草案，要設置離島國際醫療特區的第13條之1及之2修正草案，及設置離島自由貿易示範區的第18條之1修正草案，恐讓金馬離島淪為中國一國兩制試驗區，有害國家安全。","media":[{"id":"1754292023555","type":"image","filename":"url_1754292023555","originalName":"w1200","path":"https://today-obs.line-scdn.net/0hJA5spusAFW4ICgQ8t4tqOTBcGR87bA9nKmVbDy8DTFsnJlIwMj5GDS9YGUJ2aQBvKDsKDn4LH1Z1PwU_Ng/w1200","isUrl":true,"url":"https://today-obs.line-scdn.net/0hJA5spusAFW4ICgQ8t4tqOTBcGR87bA9nKmVbDy8DTFsnJlIwMj5GDS9YGUJ2aQBvKDsKDn4LH1Z1PwU_Ng/w1200"}],"order":4},{"id":"1754292133924","date":"2024-12-20","title":"藍白兩黨強行通過憲法訴訟法/選罷法/財劃法","description":"中華民國立法院會20日在中國國民黨（藍）、民眾黨（白）立委聯手下，強行三讀通過《公職人員選舉罷免法》《憲法訴訟法》《財政收支劃分法》，引發爭議。\n\n為反對藍白通過三大爭議法案，台灣多個公民團體20日舉行「冬季青鳥系列：回復國會民主，退回三大惡法」活動，號召青鳥公民運動群眾在立法院外集結，主辦方在晚間9時左右宣布現場有2萬餘人，活動在凌晨12時結束。\n\n中華民國總統賴清德20日晚間於臉書發文說，立法院是國家最高民意機關，象徵台灣的自由民主。但20日強行通過的3項法案，未經充分討論、無視民意，不僅剝奪人民監督的權利，更是侵害司法獨立，甚至衝擊攸關每位國民、國家整體資源分配的公平正義。這是沒收民主國家權力分立的原則，更是悖離民主國家人民作主的真諦。","media":[{"id":"1754292136084","type":"image","filename":"url_1754292136084","originalName":"20241220-001.jpg","path":"https://theinitium.com/wp-content/uploads/2024/12/20241220-001.jpg","isUrl":true,"url":"https://theinitium.com/wp-content/uploads/2024/12/20241220-001.jpg"},{"id":"1754292388788","type":"image","filename":"url_1754292388788","originalName":"id14395196-241220211639100311-600x400.jpg","path":"https://i.epochtimes.com/assets/uploads/2024/12/id14395196-241220211639100311-600x400.jpg","isUrl":true,"url":"https://i.epochtimes.com/assets/uploads/2024/12/id14395196-241220211639100311-600x400.jpg"}],"order":5},{"id":"1754292439173","date":"2024-12-31","title":"藍白強行通過，80歲以上免巴氏量表請外傭","description":"立法院今天三讀通過就業服務法部分修正條文，80歲以上長者聘僱外籍看護免經醫療評估。勞動部對此表示遺憾，認為會更難找到或留下外籍看護工人力，也對於照顧品質造成影響。\n\n巴氏量表目前是長照家庭申請聘僱外籍看護的醫療評估主要依據，立法院今天三讀通過就業服務法部分條文，三讀條文明定，雇主聘僱外國人從事家庭看護工作，被看護者凡年齡80歲以上，或70歲至79歲患有癌症二期以上者，得免經醫療機構之專業評估。","media":[{"id":"1754292466205","type":"image","filename":"url_1754292466205","originalName":"1200x875_wmky_375250911240_202412310044000000.jpg","path":"https://imgcdn.cna.com.tw/www/WebPhotos/800/20241231/1200x875_wmky_375250911240_202412310044000000.jpg","isUrl":true,"url":"https://imgcdn.cna.com.tw/www/WebPhotos/800/20241231/1200x875_wmky_375250911240_202412310044000000.jpg"}],"order":6},{"id":"1754292640363","date":"2025-01-13","title":"藍委游顥等人重提，中配6年改4年，放寬中配取得身分證和親屬來台定居條件","description":"是否放寬中國籍配偶取得台灣身分證年限，朝野暫休戰！藍白本週二（14日）以人數優勢，於程序委員會強勢通關「兩岸人民關係條例」修正案，並順利排入今（17日）議程，然而國民黨團卻於會中提案，將包括縮短中配入籍年限在內的所有報告事項，全部退回程序委員會。\n\n繼國民黨立委許宇甄，游顥本會期再次提出「兩岸人民關係條例第17條修正草案」，建議將中配取得身分證的年限比照外配，從6年縮短為4年，儘管民進黨團提出異議，該案14日仍經立院程序委員會排入17日院會報告事項第11案。","media":[{"id":"1754292642576","type":"image","filename":"url_1754292642576","originalName":"d63d39a2554c787f56a8324eb72802af","path":"https://s.yimg.com/ny/api/res/1.2/77WnhqTbB7ddvC697DD6Pg--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MDtoPTU0MA--/https://media.zenfs.com/zh-tw/mnews_tw_258/d63d39a2554c787f56a8324eb72802af","isUrl":true,"url":"https://s.yimg.com/ny/api/res/1.2/77WnhqTbB7ddvC697DD6Pg--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MDtoPTU0MA--/https://media.zenfs.com/zh-tw/mnews_tw_258/d63d39a2554c787f56a8324eb72802af"}],"order":7},{"id":"1754292734965","date":"2025-01-17","title":"中共國台辦大力稱讚藍白砍預算","description":"陳斌華指出，民進黨政府的媒宣預算暴增，反映其「粉飾太平、掩蓋無能」的意圖。他指控，民進黨利用媒宣費豢養網軍，攻擊異己並抹黑中國。他甚至聲稱，「島內各界對此早有公論」。然而，這段發言被台灣網友視為不當干涉內政，並大肆挖苦在野黨的刪預算行為是「獲得祖國認證」「國台辦誇獎奴才」。","media":[{"id":"1754292737320","type":"image","filename":"url_1754292737320","originalName":"b510ca55-6742-4f9e-aa08-8a24dede2532-w2400.webP","path":"https://v3-statics.mirrormedia.mg/images/b510ca55-6742-4f9e-aa08-8a24dede2532-w2400.webP","isUrl":true,"url":"https://v3-statics.mirrormedia.mg/images/b510ca55-6742-4f9e-aa08-8a24dede2532-w2400.webP"}],"order":8},{"id":"1754292961776","date":"2025-01-20","title":"藍白兩黨通過亂刪凍預算，嚴重影響台灣民生、國安","description":"台灣立法院在歷經跨日、20小時不斷電表決下，由在野的國民黨、民眾黨聯手三讀通過2025年中央政府總預算案，總預算歲出由原先編列的3兆1325億（新台幣）減為2兆9248億元，審議結果經主計總處計算，截至1月23日下午17時共計減列約2076億元，刪減金額創下新高，歲入3兆1534億元則是史上首度突破3兆。","media":[{"id":"1754292963823","type":"image","filename":"url_1754292963823","originalName":"4856516c-ba9a-40f2-80a0-85064f6d4948-w1600.webP","path":"https://v3-statics.mirrormedia.mg/images/4856516c-ba9a-40f2-80a0-85064f6d4948-w1600.webP","isUrl":true,"url":"https://v3-statics.mirrormedia.mg/images/4856516c-ba9a-40f2-80a0-85064f6d4948-w1600.webP"}],"order":9},{"id":"1754293050753","date":"2025-02-20","title":"傅崐萁香港返台，稱<完成歷史任務>","description":"國民黨團總召傅崐萁，20日晚間，和妻子花蓮縣長徐榛蔚一起從香港返台，在花蓮機場受訪時，他表示自己又完成了一項歷史任務。只是，他赴中的消息，引發關注，還有人特別來接機，東社發言人陳財能守在機場門口，當面嗆他是中共走狗。","media":[{"id":"1754293053798","type":"image","filename":"url_1754293053798","originalName":"6e9db752-30a8-49c8-8824-777f49287168.jpg","path":"https://cdn.ftvnews.com.tw/manasystem/FileData/News/1/6e9db752-30a8-49c8-8824-777f49287168.jpg","isUrl":true,"url":"https://cdn.ftvnews.com.tw/manasystem/FileData/News/1/6e9db752-30a8-49c8-8824-777f49287168.jpg"}],"order":10},{"id":"1754293127010","date":"2025-03-21","title":"空缺的7名大法官人選, 全數遭藍白所有立委的否決","description":"去年總統賴清德提名的司法院正、副院長及大法官共七名人選，全數遭到立法院否決，為了守護自由民主憲政制度、提升國安案件專業能量並持續推動司法改革，總統依據憲法增修條文第五條規定，重新提名司法院人事；21日由副總統蕭美琴公布全新名單為：司法院長被提名人為蔡秋明、副院長被提名人為蘇素娥以及司法院大法官被提名人為蕭文生、鄭純惠、林麗瑩、陳慈陽及詹鎮榮等人，同時也會在21日當天咨請立法院同意。","media":[{"id":"1754293128877","type":"image","filename":"url_1754293128877","originalName":"2000x1373_wmky_97271473653011_202507250037000000.jpg","path":"https://imgcdn.cna.com.tw/www/WebPhotos/1024/20250725/2000x1373_wmky_97271473653011_202507250037000000.jpg","isUrl":true,"url":"https://imgcdn.cna.com.tw/www/WebPhotos/1024/20250725/2000x1373_wmky_97271473653011_202507250037000000.jpg"}],"order":11},{"id":"1754293293458","date":"2025-04-15","title":"藍白連續319次阻擋強化國安的修法提案","description":"針對國民黨、民眾黨批評近日民進黨內爆發多起共諜案，立法院民進黨團強調，民進黨第一時間將涉案者送辦、開除黨籍絕不寬貸，不積極處理才是包庇，藍白只會譴責受害者，而不去批評加害者，就是背後的中共；甚至在國會阻擋民進黨團所提「國安十法」，光立委赴中納管總計就擋了319次，到底還要擋多久？\n\n民進黨團今舉行「反共諜滲透 就支持國安法案」記者會。民進黨團幹事長吳思瑤表示，共諜就是全民公敵，面對任何型態的共諜，當然要依法究辦、嚴懲，若現行法律不夠嚴格、管理不夠全面，當然要補漏，這是民進黨正努力進行的事。","media":[{"id":"1754293310783","type":"image","filename":"url_1754293310783","originalName":"1200x716_759932592628.jpg","path":"https://imgcdn.cna.com.tw/www/WebPhotos/800/20250417/1200x716_759932592628.jpg","isUrl":true,"url":"https://imgcdn.cna.com.tw/www/WebPhotos/800/20250417/1200x716_759932592628.jpg"}],"order":12},{"id":"1754293564275","date":"2025-05-31","title":"國民黨立委陳永康等提案修訂兩岸人民關係條例，內容偷渡「兩岸內戰狀態」概念","description":"國民黨立委陳永康提案修正《兩岸人民關係條例》第29條，把禁限制水域公告權責由國防部改為海委會，而且立法要旨提及兩岸內戰尚未結束，引起關注。陳永康今（13）日表示，金馬水域已解除軍管，管理也逐步移交海巡署，若禁限制水域劃設權責仍由國防部掌管，不是很奇怪？不過民進黨立委批評，修法在模糊化台灣主權。","media":[{"id":"1754293566435","type":"image","filename":"url_1754293566435","originalName":"32292608.jpg&x=0&y=0&sw=0&sh=0&sl=W&fw=800&exp=3600","path":"https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2025/06/13/realtime/32292608.jpg&x=0&y=0&sw=0&sh=0&sl=W&fw=800&exp=3600","isUrl":true,"url":"https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2025/06/13/realtime/32292608.jpg&x=0&y=0&sw=0&sh=0&sl=W&fw=800&exp=3600"}],"order":13},{"id":"1754294157202","date":"2025-06-27","title":"藍白推不在籍投票","description":"國民黨、民眾黨推「不在籍投票」，2025年6月27日在立院一讀，針對「台灣本土」進行不在籍投票，在中國的台商不適用，但律師林智群認為，還是會產生嚴重的問題，因為只要提出「身分證正反面影本」，就可以申請「不在籍投票」。","media":[{"id":"1754294158981","type":"image","filename":"url_1754294158981","originalName":"1314x836_wmkn_80395911781_0.jpg","path":"https://imgcdn.cna.com.tw/www/WebPhotos/1024/20240124/1314x836_wmkn_80395911781_0.jpg","isUrl":true,"url":"https://imgcdn.cna.com.tw/www/WebPhotos/1024/20240124/1314x836_wmkn_80395911781_0.jpg"}],"order":14},{"id":"1754294204823","date":"2025-07-10","title":"藍推「國家安全戰略法」，意圖染指總統國安決策","description":"國民黨立委陳永康等藍委提出《國家安全戰略法》，遭批企圖剝奪總統國家安全事務決策權，架空國家安全會議，讓立法院染指國安決策。對此，經民連及罷團召開聯合記者會，痛批修法是對現行體制進行三大違憲顛覆，若此法案通過，不僅破壞憲法權力分立設計，更將讓立法院過度染指國安事務。","media":[{"id":"1754294206480","type":"image","filename":"url_1754294206480","originalName":"FA0A1042-5273-4F50-9754-490ACD31F75B%E6%8B%B7%E8%B2%9D.jpeg?fit=2048%2C1365&ssl=1","path":"https://i0.wp.com/mmedia.com.tw/wp-content/uploads/2024/05/FA0A1042-5273-4F50-9754-490ACD31F75B%E6%8B%B7%E8%B2%9D.jpeg?fit=2048%2C1365&ssl=1","isUrl":true,"url":"https://i0.wp.com/mmedia.com.tw/wp-content/uploads/2024/05/FA0A1042-5273-4F50-9754-490ACD31F75B%E6%8B%B7%E8%B2%9D.jpeg?fit=2048%2C1365&ssl=1"}],"order":15},{"id":"1754294381080","date":"2025-07-18","title":"藍白強行通過立法不周的兒虐防治相關法案","description":"立法院司法及法制委員會6月4日初審通過立委所提刑法部分條文修正草案，有關提高虐童致死刑度最高至死刑或無期徒刑等條文，朝野雖均支持加重刑責，但在立法技術上未達成共識，因此保留交黨團協商。黨團協商後朝野達成共識，包括朝野都支持增訂刑法第272條之1條文，但保留刑法第286條條文送立法院會處理。\n\n國民黨與民眾黨意圖以立法不周的條文，操作民進黨不支持兒童虐待重罰法案。","media":[{"id":"1754294400438","type":"image","filename":"url_1754294400438","originalName":"c431b004a494d5475407c1ccf8a544aa.webp","path":"https://static.kmedia.com.tw/prd/2025/0718/2DB54C953C0482B7D01F7A274ABF25D6/c431b004a494d5475407c1ccf8a544aa.webp","isUrl":true,"url":"https://static.kmedia.com.tw/prd/2025/0718/2DB54C953C0482B7D01F7A274ABF25D6/c431b004a494d5475407c1ccf8a544aa.webp"}],"order":16},{"id":"1754294488771","date":"2025-07-25","title":"再度提名的7名大法官人選, 遭受藍白所有立委的全數否決","description":"憲法法庭持續被癱瘓。\n\n立法院今日（7月25日）上午行使大法官人事同意權投票，被提名人必須要獲得出席立委二分之一同意才能通過。國民黨團在投票前已經表明全數否決，民眾黨團其後也表明全部不同意，民進黨團則是針對陳慈陽與詹鎮榮兩人開放黨籍立委自由投票，最終結果7名大法官提名人全數遭到否決。","media":[{"id":"1754294490677","type":"image","filename":"url_1754294490677","originalName":"wide_tsa918x_S__130441229.jpg","path":"https://rwnews.tw/upload/newstemp_21387/wide_tsa918x_S__130441229.jpg","isUrl":true,"url":"https://rwnews.tw/upload/newstemp_21387/wide_tsa918x_S__130441229.jpg"},{"id":"1754325756672","type":"video","filename":"url_1754325756672","originalName":"Oyv7n7Yu12k?si=NDAcWsbpcE1rbgMx","path":"https://youtu.be/Oyv7n7Yu12k?si=NDAcWsbpcE1rbgMx","isUrl":true,"url":"https://youtu.be/Oyv7n7Yu12k?si=NDAcWsbpcE1rbgMx"}],"order":17}],"createdAt":"2025-08-04T07:07:26.806196300+00:00","lastModified":"2025-08-11T12:16:51.270055100+00:00"};
+        
+        // 全域變數
+        let currentEventIndex = 0;
+        let currentMediaIndex = 0;
+        let showSubtitles = true;
+        let showGrid = false;
+        let typewriterEnabled = true;
+        let isTransitioning = false;
+        let typewriterTimer = null;
+        
+        // 觸控滑動相關變數
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchEndX = 0;
+        let touchEndY = 0;
+        let isSwiping = false;
+        const minSwipeDistance = 50; // 最小滑動距離
+        
+        // 排序事件
+        const sortedEvents = MEMOIR_DATA.events.sort((a, b) => 
+            new Date(a.date).getTime() - new Date(b.date).getTime()
+        );
+
+        // 觸控滑動處理函數
+        function handleTouchStart(e) {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+            isSwiping = false;
+        }
+
+        function handleTouchMove(e) {
+            if (!touchStartX || !touchStartY) return;
+            
+            touchEndX = e.touches[0].clientX;
+            touchEndY = e.touches[0].clientY;
+            
+            const deltaX = touchEndX - touchStartX;
+            const deltaY = touchEndY - touchStartY;
+            
+            // 只有當水平滑動距離大於垂直滑動距離時才處理
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 20) {
+                e.preventDefault(); // 防止頁面滾動
+                isSwiping = true;
+            
+            //     // 顯示滑動視覺回饋
+            //     const leftFeedback = document.getElementById('swipeFeedbackLeft');
+            //     const rightFeedback = document.getElementById('swipeFeedbackRight');
+                
+            //     if (deltaX > 0) {
+            //         // 向右滑動
+            //         leftFeedback.classList.add('show');
+            //         rightFeedback.classList.remove('show');
+            //     } else {
+            //         // 向左滑動
+            //         rightFeedback.classList.add('show');
+            //         leftFeedback.classList.remove('show');
+            //     }
+            }
+        }
+
+        function handleTouchEnd(e) {
+            if (!isSwiping || !touchStartX || !touchEndX) {
+                return;
+            }
+            
+            const deltaX = touchEndX - touchStartX;
+            const deltaY = touchEndY - touchStartY;
+            
+            // 確保是水平滑動且距離足夠
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
+                if (deltaX > 0) {
+                    // 向右滑動 - 上一個事件
+                    goToEvent(currentEventIndex - 1);
+                } else {
+                    // 向左滑動 - 下一個事件
+                    goToEvent(currentEventIndex + 1);
+                }
+            }
+            
+            // 重置變數和視覺回饋
+            touchStartX = 0;
+            touchStartY = 0;
+            touchEndX = 0;
+            touchEndY = 0;
+            isSwiping = false;
+        }
+
+        // function resetSwipeFeedback() {
+        //     setTimeout(() => {
+        //         document.getElementById('swipeFeedbackLeft').classList.remove('show');
+        //         document.getElementById('swipeFeedbackRight').classList.remove('show');
+        //     }, 200);
+        // }
+
+        // 初始化應用程式
+        function initApp() {
+            console.log('📖 初始化回憶錄應用程式');
+            
+            try {
+                if (!MEMOIR_DATA || !MEMOIR_DATA.events || MEMOIR_DATA.events.length === 0) {
+                    throw new Error('沒有找到有效的回憶錄數據');
+                }
+
+                // 初始化 UI 事件
+                initEventListeners();
+                
+                // 載入第一個事件
+                loadEvent(0);
+                
+                // 初始化時間軸
+                initTimeline();
+                
+                // 初始化觸控滑動
+                initTouchSwipe();
+                
+                // 隱藏載入畫面
+                setTimeout(() => {
+                    document.getElementById('loadingScreen').classList.add('hidden');
+                }, 800);
+
+                console.log('✅ 回憶錄載入完成');
+            } catch (error) {
+                console.error('❌ 初始化失敗:', error);
+                showError('載入失敗', error.message);
+            }
+        }
+
+        // 初始化觸控滑動
+        function initTouchSwipe() {
+            const swipeAreas = [
+                document.getElementById('subtitleArea'),
+                document.getElementById('mainContent'),
+                document.getElementById('mediaArea')
+            ];
+            
+            swipeAreas.forEach(area => {
+                if (area) {
+                    area.addEventListener('touchstart', handleTouchStart, { passive: false });
+                    area.addEventListener('touchmove', handleTouchMove, { passive: false });
+                    area.addEventListener('touchend', handleTouchEnd, { passive: false });
+                }
+            });
+        }
+
+        // 初始化事件監聽器
+        function initEventListeners() {
+            // 導航按鈕
+            document.getElementById('prevEventBtn').addEventListener('click', () => goToEvent(currentEventIndex - 1));
+            document.getElementById('nextEventBtn').addEventListener('click', () => goToEvent(currentEventIndex + 1));
+            
+            // 媒體導航
+            document.getElementById('prevMediaBtn').addEventListener('click', () => goToMedia(currentMediaIndex - 1));
+            document.getElementById('nextMediaBtn').addEventListener('click', () => goToMedia(currentMediaIndex + 1));
+            
+            // 設定按鈕
+            document.getElementById('settingsBtn').addEventListener('click', toggleSettingsMenu);
+            document.getElementById('subtitleToggle').addEventListener('click', toggleSubtitles);
+            document.getElementById('gridToggle').addEventListener('click', toggleGridMode);
+            document.getElementById('skipTypingBtn').addEventListener('click', skipTypewriter);
+            
+            // 時間軸導航
+            document.getElementById('timelineBtn').addEventListener('click', showTimeline);
+            document.getElementById('timelineClose').addEventListener('click', hideTimeline);
+            
+            // 使用說明
+            document.getElementById('helpBtn').addEventListener('click', showHelp);
+            document.getElementById('helpClose').addEventListener('click', hideHelp);
+            
+            // 全螢幕查看器
+            document.getElementById('viewerClose').addEventListener('click', closeMediaViewer);
+            document.getElementById('mediaViewer').addEventListener('click', (e) => {
+                if (e.target === e.currentTarget) closeMediaViewer();
+            });
+            
+            // 鍵盤控制
+            document.addEventListener('keydown', handleKeyPress);
+            
+            // 點擊外部關閉選單
+            document.addEventListener('click', (e) => {
+                const settingsMenu = document.getElementById('settingsMenu');
+                const settingsBtn = document.getElementById('settingsBtn');
+                if (!settingsMenu.contains(e.target) && !settingsBtn.contains(e.target)) {
+                    settingsMenu.classList.add('hidden');
+                }
+            });
+        }
+
+        // 初始化時間軸
+        function initTimeline() {
+            const timelineList = document.getElementById('timelineList');
+            timelineList.innerHTML = '';
+            
+            sortedEvents.forEach((event, index) => {
+                const timelineItem = document.createElement('div');
+                timelineItem.className = `timeline-item ${index === currentEventIndex ? 'active' : ''}`;
+                timelineItem.addEventListener('click', () => {
+                    goToEvent(index);
+                    hideTimeline();
+                });
+                
+                const eventDate = new Date(event.date).toLocaleDateString('zh-TW', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                
+                timelineItem.innerHTML = `
+                    <div class="timeline-item-date">${eventDate}</div>
+                    <div class="timeline-item-title">${event.title}</div>
+                    <div class="timeline-item-description">${event.description}</div>
+                `;
+                
+                timelineList.appendChild(timelineItem);
+            });
+        }
+
+        // 載入事件 - 添加動畫效果
+        function loadEvent(eventIndex) {
+            if (eventIndex < 0 || eventIndex >= sortedEvents.length || isTransitioning) return;
+            
+            const event = sortedEvents[eventIndex];
+            if (!event || !event.media || event.media.length === 0) return;
+            
+            // 設置轉場狀態
+            isTransitioning = true;
+            
+            // 開始淡出動畫
+            const mainContent = document.getElementById('mainContent');
+            const subtitleArea = document.getElementById('subtitleArea');
+            const mainMedia = document.getElementById('mainMedia');
+            
+            mainContent.classList.add('transitioning');
+            subtitleArea.classList.add('fade-out');
+            if (mainMedia) mainMedia.classList.add('transitioning');
+            
+            // 延遲載入新內容
+            setTimeout(() => {
+                currentEventIndex = eventIndex;
+                currentMediaIndex = 0;
+                
+                // 更新 UI
+                updateEventInfo(event);
+                updateNavigationButtons();
+                updateTimelineActive();
+                
+                if (showGrid) {
+                    loadGridMode(event.media);
+                } else {
+                    loadCarouselMode(event.media);
+                }
+                
+                // 重置打字機效果
+                if (typewriterEnabled && showSubtitles) {
+                    startTypewriter(event.description);
+                }
+                
+                // 淡入新內容
+                setTimeout(() => {
+                    mainContent.classList.remove('transitioning');
+                    subtitleArea.classList.remove('fade-out');
+                    subtitleArea.classList.add('fade-in');
+                    if (mainMedia) mainMedia.classList.remove('transitioning');
+                    
+                    // 清除動畫類
+                    setTimeout(() => {
+                        subtitleArea.classList.remove('fade-in');
+                        isTransitioning = false;
+                    }, 500);
+                }, 100);
+            }, 250);
+        }
+
+        // 更新事件資訊
+        function updateEventInfo(event) {
+            document.getElementById('currentEventNum').textContent = currentEventIndex + 1;
+            document.getElementById('totalEvents').textContent = sortedEvents.length;
+            document.getElementById('mediaCount').textContent = event.media.length;
+            
+            const eventDate = new Date(event.date).toLocaleDateString('zh-TW', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            document.getElementById('eventDate').textContent = eventDate;
+            document.getElementById('eventTitle').textContent = event.title;
+            
+            if (!typewriterEnabled || !showSubtitles) {
+                document.getElementById('eventDescription').textContent = event.description;
+            }
+        }
+
+        // 更新導航按鈕狀態
+        function updateNavigationButtons() {
+            const prevEventBtn = document.getElementById('prevEventBtn');
+            const nextEventBtn = document.getElementById('nextEventBtn');
+            
+            if (currentEventIndex === 0) {
+                prevEventBtn.classList.add('disabled');
+            } else {
+                prevEventBtn.classList.remove('disabled');
+            }
+            
+            if (currentEventIndex === sortedEvents.length - 1) {
+                nextEventBtn.classList.add('disabled');
+            } else {
+                nextEventBtn.classList.remove('disabled');
+            }
+        }
+
+        // 更新時間軸激活狀態
+        function updateTimelineActive() {
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            timelineItems.forEach((item, index) => {
+                if (index === currentEventIndex) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+
+        // 載入輪播模式
+        function loadCarouselMode(media) {
+            const mediaDisplay = document.getElementById('mediaDisplay');
+            const thumbnailScroll = document.getElementById('thumbnailScroll');
+            
+            // 清空現有內容
+            mediaDisplay.innerHTML = '';
+            thumbnailScroll.innerHTML = '';
+            
+            // 根據媒體數量決定縮圖排列方式
+            if (media.length > 3) {
+                thumbnailScroll.classList.add('many-items');
+            } else {
+                thumbnailScroll.classList.remove('many-items');
+            }
+            
+            // 載入主要媒體
+            loadMediaIntoElement(media[currentMediaIndex], mediaDisplay, true);
+            
+            // 載入縮圖
+            media.forEach((item, index) => {
+                const thumbnail = createThumbnailElement(item, index);
+                thumbnailScroll.appendChild(thumbnail);
+            });
+            
+            updateMediaNavigation(media);
+            updateMediaCounter();
+        }
+
+        // 載入網格模式
+        function loadGridMode(media) {
+            const gridContainer = document.getElementById('gridContainer');
+            gridContainer.innerHTML = '';
+            
+            media.forEach((item, index) => {
+                const gridItem = createGridItemElement(item, index);
+                gridContainer.appendChild(gridItem);
+            });
+        }
+
+        // 創建媒體元素
+        function loadMediaIntoElement(mediaItem, container, isMainDisplay = false) {
+            container.innerHTML = '';
+            
+            if (mediaItem.type === 'image') {
+                const img = document.createElement('img');
+                img.src = mediaItem.isUrl ? mediaItem.url : `media/${getMediaFileName(mediaItem)}`;
+                img.alt = mediaItem.originalName;
+                img.style.cursor = 'pointer';
+                
+                img.onerror = function() {
+                    container.innerHTML = `
+                        <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: #f0f0f0; color: #666;">
+                            ❌ 圖片載入失敗
+                        </div>
+                    `;
+                };
+                
+                if (isMainDisplay) {
+                    img.addEventListener('click', () => openMediaViewer(mediaItem));
+                }
+                
+                container.appendChild(img);
+            } else if (mediaItem.type === 'video') {
+                if (mediaItem.isUrl && (mediaItem.url.includes('youtube.com') || mediaItem.url.includes('youtu.be'))) {
+                    // YouTube 影片
+                    const videoId = extractYouTubeId(mediaItem.url);
+                    if (videoId) {
+                        const iframe = document.createElement('iframe');
+                        // 使用 youtube-nocookie.com 提高兼容性
+                        iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?enablejsapi=1&rel=0&modestbranding=1`;
+                        iframe.style.width = '100%';
+                        iframe.style.height = '100%';
+                        iframe.style.border = 'none';
+                        iframe.allowFullscreen = true;
+                        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+                        iframe.title = mediaItem.originalName;
+                        
+                        // 錯誤處理
+                        iframe.onerror = function() {
+                            container.innerHTML = `
+                                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #1a1a2e; color: white; text-align: center;">
+                                    <div style="font-size: 48px; margin-bottom: 20px;">📺</div>
+                                    <div style="margin-bottom: 10px; font-size: 16px; font-weight: bold;">YouTube 影片</div>
+                                    <div style="margin-bottom: 15px; font-size: 14px; opacity: 0.8;">${mediaItem.originalName}</div>
+                                    <a href="${mediaItem.url}" target="_blank" rel="noopener noreferrer" 
+                                    style="padding: 10px 20px; background: #e74c3c; color: white; text-decoration: none; border-radius: 5px; font-size: 14px;">
+                                        🚀 在新視窗觀看
+                                    </a>
+                                </div>
+                            `;
+                        };
+                        
+                        container.appendChild(iframe);
+                    } else {
+                        // 無法解析 YouTube ID
+                        container.innerHTML = `
+                            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #1a1a2e; color: white; text-align: center;">
+                                <div style="font-size: 48px; margin-bottom: 20px;">❌</div>
+                                <div style="margin-bottom: 10px; font-size: 16px;">無效的 YouTube 連結</div>
+                                <a href="${mediaItem.url}" target="_blank" rel="noopener noreferrer" 
+                                style="padding: 10px 20px; background: #3498db; color: white; text-decoration: none; border-radius: 5px; font-size: 14px;">
+                                    🔗 查看原連結
+                                </a>
+                            </div>
+                        `;
+                    }
+                } else {
+                    // 一般影片
+                    const video = document.createElement('video');
+                    video.src = mediaItem.isUrl ? mediaItem.url : `media/${getMediaFileName(mediaItem)}`;
+                    video.controls = true;
+                    video.muted = true;
+                    video.playsInline = true;
+                    video.style.cursor = 'pointer';
+                    
+                    video.onerror = function() {
+                        container.innerHTML = `
+                            <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: #f0f0f0; color: #666;">
+                                ❌ 影片載入失敗
+                            </div>
+                        `;
+                    };
+                    
+                    if (isMainDisplay) {
+                        video.addEventListener('click', () => openMediaViewer(mediaItem));
+                    }
+                    
+                    container.appendChild(video);
+                }
+            }
+        }
+
+        // 創建縮圖元素
+        function createThumbnailElement(mediaItem, index) {
+            const thumbnail = document.createElement('div');
+            thumbnail.className = `thumbnail ${index === currentMediaIndex ? 'active' : ''}`;
+            thumbnail.addEventListener('click', () => goToMedia(index));
+            
+            loadMediaIntoElement(mediaItem, thumbnail, false);
+            
+            const indexLabel = document.createElement('div');
+            indexLabel.className = 'thumbnail-index';
+            indexLabel.textContent = index + 1;
+            thumbnail.appendChild(indexLabel);
+            
+            return thumbnail;
+        }
+
+        // 創建網格項目元素
+        function createGridItemElement(mediaItem, index) {
+            const gridItem = document.createElement('div');
+            gridItem.className = `grid-item ${index === currentMediaIndex ? 'active' : ''}`;
+            gridItem.addEventListener('click', () => goToMedia(index));
+            gridItem.addEventListener('dblclick', () => openMediaViewer(mediaItem));
+            
+            loadMediaIntoElement(mediaItem, gridItem, false);
+            
+            const info = document.createElement('div');
+            info.className = 'grid-item-info';
+            
+            const name = document.createElement('div');
+            name.className = 'grid-item-name';
+            name.textContent = mediaItem.originalName;
+            info.appendChild(name);
+            
+            gridItem.appendChild(info);
+            
+            return gridItem;
+        }
+
+        // 更新媒體導航
+        function updateMediaNavigation(media) {
+            const prevBtn = document.getElementById('prevMediaBtn');
+            const nextBtn = document.getElementById('nextMediaBtn');
+            
+            if (currentMediaIndex === 0) {
+                prevBtn.classList.add('disabled');
+            } else {
+                prevBtn.classList.remove('disabled');
+            }
+            
+            if (currentMediaIndex === media.length - 1) {
+                nextBtn.classList.add('disabled');
+            } else {
+                nextBtn.classList.remove('disabled');
+            }
+        }
+
+        // 更新媒體計數器
+        function updateMediaCounter() {
+            const counter = document.getElementById('mediaCounterDisplay');
+            const currentEvent = sortedEvents[currentEventIndex];
+            counter.textContent = `${currentMediaIndex + 1} / ${currentEvent.media.length}`;
+        }
+
+        // 切換到指定事件
+        function goToEvent(eventIndex) {
+            if (eventIndex >= 0 && eventIndex < sortedEvents.length && eventIndex !== currentEventIndex && !isTransitioning) {
+                loadEvent(eventIndex);
+            }
+        }
+
+        // 切換到指定媒體
+        function goToMedia(mediaIndex) {
+            const currentEvent = sortedEvents[currentEventIndex];
+            if (mediaIndex >= 0 && mediaIndex < currentEvent.media.length && mediaIndex !== currentMediaIndex) {
+                currentMediaIndex = mediaIndex;
+                
+                if (showGrid) {
+                    updateGridSelection();
+                } else {
+                    const mediaDisplay = document.getElementById('mediaDisplay');
+                    loadMediaIntoElement(currentEvent.media[currentMediaIndex], mediaDisplay, true);
+                    updateThumbnailSelection();
+                    updateMediaNavigation(currentEvent.media);
+                    updateMediaCounter();
+                }
+            }
+        }
+
+        // 更新縮圖選擇狀態
+        function updateThumbnailSelection() {
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            thumbnails.forEach((thumb, index) => {
+                if (index === currentMediaIndex) {
+                    thumb.classList.add('active');
+                } else {
+                    thumb.classList.remove('active');
+                }
+            });
+        }
+
+        // 更新網格選擇狀態
+        function updateGridSelection() {
+            const gridItems = document.querySelectorAll('.grid-item');
+            gridItems.forEach((item, index) => {
+                if (index === currentMediaIndex) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+
+        // 切換設定選單
+        function toggleSettingsMenu() {
+            const menu = document.getElementById('settingsMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // 切換字幕顯示
+        function toggleSubtitles() {
+            showSubtitles = !showSubtitles;
+            const toggle = document.getElementById('subtitleToggle');
+            const eventDescription = document.getElementById('eventDescription');
+            
+            if (showSubtitles) {
+                toggle.classList.add('active');
+                eventDescription.style.display = 'block';
+                
+                // 重新開始打字機效果
+                if (typewriterEnabled) {
+                    const currentEvent = sortedEvents[currentEventIndex];
+                    startTypewriter(currentEvent.description);
+                }
+            } else {
+                toggle.classList.remove('active');
+                eventDescription.style.display = 'none';
+            }
+        }
+
+        // 切換網格模式
+        function toggleGridMode() {
+            showGrid = !showGrid;
+            const toggle = document.getElementById('gridToggle');
+            const carousel = document.getElementById('mediaCarousel');
+            const grid = document.getElementById('mediaGrid');
+            const mainContent = document.getElementById('mainContent');
+            const subtitleArea = document.getElementById('subtitleArea');
+            
+            if (showGrid) {
+                toggle.classList.add('active');
+                carousel.classList.add('hidden');
+                grid.classList.remove('hidden');
+                mainContent.classList.add('grid-mode');
+                subtitleArea.style.display = 'none';
+                
+                const currentEvent = sortedEvents[currentEventIndex];
+                loadGridMode(currentEvent.media);
+            } else {
+                toggle.classList.remove('active');
+                carousel.classList.remove('hidden');
+                grid.classList.add('hidden');
+                mainContent.classList.remove('grid-mode');
+                subtitleArea.style.display = 'block';
+                
+                const currentEvent = sortedEvents[currentEventIndex];
+                loadCarouselMode(currentEvent.media);
+            }
+        }
+
+        // 顯示時間軸
+        function showTimeline() {
+            const timelinePanel = document.getElementById('timelinePanel');
+            timelinePanel.classList.remove('hidden');
+            
+            // 添加淡入動畫
+            setTimeout(() => {
+                const timelineContent = timelinePanel.querySelector('.timeline-content');
+                timelineContent.classList.add('fade-in');
+            }, 10);
+        }
+
+        // 隱藏時間軸
+        function hideTimeline() {
+            const timelinePanel = document.getElementById('timelinePanel');
+            const timelineContent = timelinePanel.querySelector('.timeline-content');
+            
+            timelineContent.classList.remove('fade-in');
+            timelineContent.classList.add('fade-out');
+            
+            setTimeout(() => {
+                timelinePanel.classList.add('hidden');
+                timelineContent.classList.remove('fade-out');
+            }, 300);
+        }
+
+        // 顯示使用說明
+        function showHelp() {
+            document.getElementById('helpPanel').classList.remove('hidden');
+        }
+
+        // 隱藏使用說明
+        function hideHelp() {
+            document.getElementById('helpPanel').classList.add('hidden');
+        }
+
+        // 打字機效果
+        function startTypewriter(text) {
+            const element = document.getElementById('eventDescription');
+            element.innerHTML = '';
+            
+            clearTimeout(typewriterTimer);
+            
+            let index = 0;
+            const speed = 50;
+            
+            function typeChar() {
+                if (index < text.length) {
+                    element.textContent += text.charAt(index);
+                    index++;
+                    typewriterTimer = setTimeout(typeChar, speed);
+                } else {
+                    // 完成打字，隱藏跳過按鈕
+                    document.getElementById('skipTypingBtn').classList.add('hidden');
+                }
+            }
+            
+            // 顯示跳過按鈕
+            document.getElementById('skipTypingBtn').classList.remove('hidden');
+            typeChar();
+        }
+
+        // 跳過打字機效果
+        function skipTypewriter() {
+            clearTimeout(typewriterTimer);
+            const currentEvent = sortedEvents[currentEventIndex];
+            document.getElementById('eventDescription').textContent = currentEvent.description;
+            document.getElementById('skipTypingBtn').classList.add('hidden');
+        }
+
+        // 開啟全螢幕媒體查看器
+        function openMediaViewer(mediaItem) {
+            const viewer = document.getElementById('mediaViewer');
+            const content = document.getElementById('viewerContent');
+            
+            loadMediaIntoElement(mediaItem, content, false);
+            viewer.classList.remove('hidden');
+        }
+
+        // 關閉全螢幕媒體查看器
+        function closeMediaViewer() {
+            document.getElementById('mediaViewer').classList.add('hidden');
+        }
+
+        // 鍵盤事件處理
+        function handleKeyPress(e) {
+            const viewer = document.getElementById('mediaViewer');
+            const timelinePanel = document.getElementById('timelinePanel');
+            const helpPanel = document.getElementById('helpPanel');
+            const settingsMenu = document.getElementById('settingsMenu');
+            
+            // 如果有面板開啟，只處理 ESC 鍵
+            if (!viewer.classList.contains('hidden') || 
+                !timelinePanel.classList.contains('hidden') || 
+                !helpPanel.classList.contains('hidden') ||
+                !settingsMenu.classList.contains('hidden')) {
+                if (e.key === 'Escape') {
+                    closeMediaViewer();
+                    hideTimeline();
+                    hideHelp();
+                    settingsMenu.classList.add('hidden');
+                }
+                return;
+            }
+            
+            // 如果正在轉場，忽略鍵盤事件
+            if (isTransitioning) return;
+            
+            switch (e.key) {
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    goToEvent(currentEventIndex - 1);
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    goToEvent(currentEventIndex + 1);
+                    break;
+                case 'g':
+                case 'G':
+                    e.preventDefault();
+                    toggleGridMode();
+                    break;
+                case 'Escape':
+                    e.preventDefault();
+                    if (showGrid) {
+                        toggleGridMode();
+                    }
+                    break;
+            }
+        }
+
+        // 輔助函數
+        function getMediaFileName(mediaItem) {
+            const currentEvent = sortedEvents[currentEventIndex];
+            const extension = mediaItem.path.split('.').pop();
+            return `${currentEvent.id}_${mediaItem.id}.${extension}`;
+        }
+
+        function extractYouTubeId(url) {
+            const patterns = [
+                /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/,
+                /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/
+            ];
+            
+            for (const pattern of patterns) {
+                const match = url.match(pattern);
+                if (match && match[2] && match[2].length === 11) {
+                    return match[2];
+                }
+            }
+            
+            return null;
+        }
+
+        function showError(title, message) {
+            alert(`${title}: ${message}`);
+        }
+
+        // 初始化 Lucide 圖標
+        lucide.createIcons();
+
+        // 等待 DOM 載入後初始化
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initApp);
+        } else {
+            initApp();
+        }
+    </script>
+</body>
+</html>
