@@ -2138,3 +2138,29 @@ body {
     border: 0 !important;
     opacity: 0 !important;
 }
+
+/* 懸浮的設定選單樣式 */
+.settings-menu.floating{
+  position: fixed;          /* 讓它脫離 header，改為全視窗定位 */
+  top: 72px;                /* 預設初始位置，可被 JS 覆寫 */
+  left: 12px;
+  z-index: 9999;
+  width: 280px;             /* 依你的面板寬度調整 */
+  box-shadow: 0 12px 32px rgba(0,0,0,.35);
+  border-radius: 12px;
+  cursor: default;
+}
+
+/* 拖曳握把 */
+.settings-menu .drag-handle{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  cursor: grab;
+  user-select: none;
+  touch-action: none;       /* 手機避免滾動衝突 */
+}
+.settings-menu.dragging .drag-handle{ cursor: grabbing; }
+
