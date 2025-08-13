@@ -1040,20 +1040,20 @@
                 }
             }
 
-            // === Quick Dock（取代舊 Header 收合）===
+            // === Quick Dock（全新命名，避免和舊 header 收合撞名）===
             const DOCK_OPEN_KEY = 'memoirflow:dock-open';
             let isDockOpen = (localStorage.getItem(DOCK_OPEN_KEY) ?? 'true') === 'true';
 
-            function initHeaderCollapse() {
+            function initDock() {
                 console.log('🔧 初始化 Quick Dock');
 
-                // 完全停用舊的 headerContent
+                // 完全停用舊的 headerContent（你也可以直接刪掉那塊 HTML）
                 if (elements.headerContent) {
                     elements.headerContent.classList.add('hidden');
                     elements.headerContent.style.display = 'none';
                 }
                 if (elements.header) {
-                    elements.header.classList.add('collapsed'); // 視覺上與先前一致
+                    elements.header.classList.add('collapsed');
                 }
 
                 // 初始 Dock 狀態
@@ -1073,24 +1073,17 @@
                     });
                 }
 
-                // Dock 內的兩顆快捷鍵 → 導到既有的功能
+                // Dock 內的兩顆快捷鍵
                 if (elements.quickSettingsBtn) {
                     elements.quickSettingsBtn.addEventListener('click', (e) => {
                         e.preventDefault();
-                        // 開啟設定選單
-                        if (elements.settingsMenu) {
-                            elements.settingsMenu.classList.add('visible');
-                        }
-                        // 如果你想關掉 Dock 再展示設定，可加：isDockOpen=false; applyDockState(true);
+                        if (elements.settingsMenu) elements.settingsMenu.classList.add('visible');
                     });
                 }
-
                 if (elements.quickTimelineBtn) {
                     elements.quickTimelineBtn.addEventListener('click', (e) => {
                         e.preventDefault();
                         showTimeline();
-                        // 關掉 Dock（可選）
-                        // isDockOpen = false; applyDockState(true);
                     });
                 }
             }
@@ -1099,25 +1092,22 @@
                 isDockOpen = !isDockOpen;
                 localStorage.setItem(DOCK_OPEN_KEY, String(isDockOpen));
                 applyDockState(true);
-                updateToggleButtonIcon(!isDockOpen); // 收起時顯示向下，打開時顯示向上
+                updateDockToggleIcon(!isDockOpen); // Dock 關閉時顯示 chevron-down
             }
 
-            function applyDockState(withAnimate = true) {
+            function applyDockState() {
                 if (!elements.quickDock) return;
                 if (isDockOpen) {
                     elements.quickDock.classList.add('open');
                 } else {
                     elements.quickDock.classList.remove('open');
                 }
-
-                // 重新渲染 lucide 圖示
                 if (typeof lucide !== 'undefined') {
                     try { lucide.createIcons(); } catch (e) {}
                 }
             }
 
-            function updateToggleButtonIcon(collapsed) {
-                // collapsed = true 表示 Dock 關閉 → 顯示「chevron-down」（提示可展開）
+            function updateDockToggleIcon(collapsed) {
                 const buttons = [elements.headerToggleBtn, elements.mobileHeaderToggleBtn];
                 buttons.forEach(btn => {
                     if (!btn) return;
@@ -1127,7 +1117,6 @@
                     btn.title = collapsed ? '展開工具列' : '收合工具列';
                     icon.setAttribute('data-lucide', collapsed ? 'chevron-down' : 'chevron-up');
                 });
-
                 if (typeof lucide !== 'undefined') {
                     try { lucide.createIcons(); } catch (e) {}
                 }
@@ -1583,8 +1572,8 @@
             function initEventListeners() {
                 console.log('🔧 初始化事件監聽器');
 
-                // 初始化 Header 收合功能
-                initHeaderCollapse();
+                // 初始化 Dock
+                initDock();
 
                 // 動態調整內容高度
                 // document.addEventListener('DOMContentLoaded', syncMainContentOffset);
@@ -1623,20 +1612,20 @@
                 }
                 
                 // 點擊其他地方關閉設定選單
-                document.addEventListener('click', () => {
-                    if (elements.settingsMenu) {
-                        elements.settingsMenu.classList.remove('visible');
-                    }
-
-                    // 如果點擊發生在 Dock 外部且不是 toggle 按鈕，就收合
-                    const clickInsideDock = elements.quickDock?.contains(e.target);
-                    const clickOnToggles = elements.headerToggleBtn?.contains(e.target) || elements.mobileHeaderToggleBtn?.contains(e.target);
-                    if (!clickInsideDock && !clickOnToggles && isDockOpen) {
-                        isDockOpen = false;
-                        localStorage.setItem(DOCK_OPEN_KEY, 'false');
-                        applyDockState(true);
-                        updateToggleButtonIcon(true);
-                    }
+                document.addEventListener('click', (e) => {
+                if (elements.settingsMenu) {
+                    elements.settingsMenu.classList.remove('visible');
+                }
+                const clickInsideDock = elements.quickDock?.contains(e.target);
+                const clickOnToggles =
+                    elements.headerToggleBtn?.contains(e.target) ||
+                    elements.mobileHeaderToggleBtn?.contains(e.target);
+                if (!clickInsideDock && !clickOnToggles && isDockOpen) {
+                    isDockOpen = false;
+                    localStorage.setItem(DOCK_OPEN_KEY, 'false');
+                    applyDockState(true);
+                    updateDockToggleIcon(true);
+                }
                 });
 
                 // 網格切換
@@ -2719,7 +2708,7 @@
     
     <!-- 版權聲明 -->
     <script>
-        console.log('%c🔒 生成時間: 2025-08-13T22:11:36.909313800+00:00', 'color: #6b7280; font-size: 10px;');
+        console.log('%c🔒 生成時間: 2025-08-13T22:24:25.947520+00:00', 'color: #6b7280; font-size: 10px;');
         console.log('%c🔐 版權所有 © MemoirFlow (加密版)', 'color: #6b7280; font-size: 10px;');
         console.log('%c🛡️ 此內容受 AES-256-GCM 加密保護', 'color: #10b981; font-size: 10px;');
     </script>
