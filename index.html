@@ -795,6 +795,23 @@
         </div>
     </div>
 
+    <!-- 左側懸浮工具列（只顯示：設定、時間軸） -->
+    <div id="quickDock" class="quick-dock" aria-label="快速工具列" role="navigation">
+        <button id="quickSettingsBtn" class="dock-item" type="button">
+            <span class="dock-icon">
+                <i data-lucide="settings" style="width:18px;height:18px;"></i>
+            </span>
+            <span class="dock-label">設定</span>
+        </button>
+
+        <button id="quickTimelineBtn" class="dock-item" type="button">
+            <span class="dock-icon">
+                <i data-lucide="calendar" style="width:18px;height:18px;"></i>
+            </span>
+            <span class="dock-label">時間軸</span>
+        </button>
+    </div>
+
     <!-- 數據注入點 -->
     
                 <script>
@@ -804,8 +821,6 @@
                 </script>
             
 
-
-    
     <!-- 主要腳本 -->
     <script>
         (function() {
@@ -909,6 +924,11 @@
                 currentPosition: document.getElementById('currentPosition'),
                 totalEvents: document.getElementById('totalEvents'),
                 currentDate: document.getElementById('currentDate'),
+
+                // 左側按鈕
+                quickDock: document.getElementById('quickDock'),
+                quickSettingsBtn: document.getElementById('quickSettingsBtn'),
+                quickTimelineBtn: document.getElementById('quickTimelineBtn'),
             };
 
             // 渲染進度指示器
@@ -1020,7 +1040,98 @@
                 }
             }
 
+            // === Quick Dock（取代舊 Header 收合）===
+            const DOCK_OPEN_KEY = 'memoirflow:dock-open';
+            let isDockOpen = (localStorage.getItem(DOCK_OPEN_KEY) ?? 'true') === 'true';
 
+            function initHeaderCollapse() {
+                console.log('🔧 初始化 Quick Dock');
+
+                // 完全停用舊的 headerContent
+                if (elements.headerContent) {
+                    elements.headerContent.classList.add('hidden');
+                    elements.headerContent.style.display = 'none';
+                }
+                if (elements.header) {
+                    elements.header.classList.add('collapsed'); // 視覺上與先前一致
+                }
+
+                // 初始 Dock 狀態
+                applyDockState(false);
+
+                // 切換按鈕事件（桌面＋手機）
+                if (elements.headerToggleBtn) {
+                    elements.headerToggleBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        toggleDock();
+                    });
+                }
+                if (elements.mobileHeaderToggleBtn) {
+                    elements.mobileHeaderToggleBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        toggleDock();
+                    });
+                }
+
+                // Dock 內的兩顆快捷鍵 → 導到既有的功能
+                if (elements.quickSettingsBtn) {
+                    elements.quickSettingsBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        // 開啟設定選單
+                        if (elements.settingsMenu) {
+                            elements.settingsMenu.classList.add('visible');
+                        }
+                        // 如果你想關掉 Dock 再展示設定，可加：isDockOpen=false; applyDockState(true);
+                    });
+                }
+
+                if (elements.quickTimelineBtn) {
+                    elements.quickTimelineBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        showTimeline();
+                        // 關掉 Dock（可選）
+                        // isDockOpen = false; applyDockState(true);
+                    });
+                }
+            }
+
+            function toggleDock() {
+                isDockOpen = !isDockOpen;
+                localStorage.setItem(DOCK_OPEN_KEY, String(isDockOpen));
+                applyDockState(true);
+                updateToggleButtonIcon(!isDockOpen); // 收起時顯示向下，打開時顯示向上
+            }
+
+            function applyDockState(withAnimate = true) {
+                if (!elements.quickDock) return;
+                if (isDockOpen) {
+                    elements.quickDock.classList.add('open');
+                } else {
+                    elements.quickDock.classList.remove('open');
+                }
+
+                // 重新渲染 lucide 圖示
+                if (typeof lucide !== 'undefined') {
+                    try { lucide.createIcons(); } catch (e) {}
+                }
+            }
+
+            function updateToggleButtonIcon(collapsed) {
+                // collapsed = true 表示 Dock 關閉 → 顯示「chevron-down」（提示可展開）
+                const buttons = [elements.headerToggleBtn, elements.mobileHeaderToggleBtn];
+                buttons.forEach(btn => {
+                    if (!btn) return;
+                    const icon = btn.querySelector('i[data-lucide]');
+                    if (!icon) return;
+                    btn.classList.toggle('collapsed', collapsed);
+                    btn.title = collapsed ? '展開工具列' : '收合工具列';
+                    icon.setAttribute('data-lucide', collapsed ? 'chevron-down' : 'chevron-up');
+                });
+
+                if (typeof lucide !== 'undefined') {
+                    try { lucide.createIcons(); } catch (e) {}
+                }
+            }
 
             // 新增：Header 收合狀態管理
             const HEADER_COLLAPSED_KEY = 'memoirflow:header-collapsed';
@@ -1516,8 +1627,18 @@
                     if (elements.settingsMenu) {
                         elements.settingsMenu.classList.remove('visible');
                     }
+
+                    // 如果點擊發生在 Dock 外部且不是 toggle 按鈕，就收合
+                    const clickInsideDock = elements.quickDock?.contains(e.target);
+                    const clickOnToggles = elements.headerToggleBtn?.contains(e.target) || elements.mobileHeaderToggleBtn?.contains(e.target);
+                    if (!clickInsideDock && !clickOnToggles && isDockOpen) {
+                        isDockOpen = false;
+                        localStorage.setItem(DOCK_OPEN_KEY, 'false');
+                        applyDockState(true);
+                        updateToggleButtonIcon(true);
+                    }
                 });
-                
+
                 // 網格切換
                 if (elements.gridToggle) {
                     elements.gridToggle.addEventListener('click', toggleGridMode);
@@ -2598,7 +2719,7 @@
     
     <!-- 版權聲明 -->
     <script>
-        console.log('%c🔒 生成時間: 2025-08-13T19:04:13.055591800+00:00', 'color: #6b7280; font-size: 10px;');
+        console.log('%c🔒 生成時間: 2025-08-13T22:10:32.002816600+00:00', 'color: #6b7280; font-size: 10px;');
         console.log('%c🔐 版權所有 © MemoirFlow (加密版)', 'color: #6b7280; font-size: 10px;');
         console.log('%c🛡️ 此內容受 AES-256-GCM 加密保護', 'color: #10b981; font-size: 10px;');
     </script>
