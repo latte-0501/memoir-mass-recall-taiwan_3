@@ -931,6 +931,123 @@
                 quickTimelineBtn: document.getElementById('quickTimelineBtn'),
             };
 
+            const SETTINGS_POS_KEY = 'memoirflow:settings-pos';
+
+            function initDraggableSettingsMenu(){
+            const menu = elements.settingsMenu;
+            if (!menu) return;
+
+            // 加上懸浮類別，從此用 fixed 定位
+            menu.classList.add('floating');
+
+            // 若沒有握把，就動態加一個在最上方
+            if (!document.getElementById('settingsDragHandle')) {
+                const handle = document.createElement('div');
+                handle.id = 'settingsDragHandle';
+                handle.className = 'drag-handle';
+                handle.innerHTML =
+                `<i data-lucide="grip-vertical" style="width:14px;height:14px;"></i><span>拖曳移動</span>`;
+                menu.insertAdjacentElement('afterbegin', handle);
+                if (typeof lucide !== 'undefined') { try { lucide.createIcons(); } catch(e){} }
+            }
+
+            const handle = document.getElementById('settingsDragHandle');
+
+            // 1) 還原上次位置（若有）
+            const saved = JSON.parse(localStorage.getItem(SETTINGS_POS_KEY) || 'null');
+            if (saved && Number.isFinite(saved.left) && Number.isFinite(saved.top)) {
+                menu.style.left = saved.left + 'px';
+                menu.style.top  = saved.top  + 'px';
+            } else {
+                // 第一次顯示時靠近觸發按鈕
+                positionSettingsNearButton();
+            }
+
+            // 2) 拖曳事件（Pointer Events 同時支援滑鼠與觸控）
+            let startX=0, startY=0, startLeft=0, startTop=0;
+
+            handle.addEventListener('pointerdown', (e)=>{
+                e.preventDefault();
+                e.stopPropagation();
+                menu.setPointerCapture?.(e.pointerId);
+
+                const rect = menu.getBoundingClientRect();
+                startLeft = rect.left;
+                startTop  = rect.top;
+                startX = e.clientX;
+                startY = e.clientY;
+
+                menu.classList.add('dragging');
+                window.addEventListener('pointermove', onMove);
+                window.addEventListener('pointerup', onUp, { once:true });
+            });
+
+            function onMove(e){
+                const dx = e.clientX - startX;
+                const dy = e.clientY - startY;
+
+                const w = menu.offsetWidth;
+                const h = menu.offsetHeight;
+                const minL = 0, minT = 0;
+                const maxL = window.innerWidth  - w;
+                const maxT = window.innerHeight - h;
+
+                const left = Math.min(Math.max(startLeft + dx, minL), maxL);
+                const top  = Math.min(Math.max(startTop  + dy, minT), maxT);
+
+                menu.style.left = left + 'px';
+                menu.style.top  = top  + 'px';
+            }
+
+            function onUp(){
+                menu.classList.remove('dragging');
+                window.removeEventListener('pointermove', onMove);
+
+                // 持久化
+                const rect = menu.getBoundingClientRect();
+                localStorage.setItem(SETTINGS_POS_KEY,
+                JSON.stringify({ left: Math.round(rect.left), top: Math.round(rect.top) })
+                );
+            }
+
+            // 3) 視窗尺寸改變時，確保面板仍在可視範圍內
+            window.addEventListener('resize', ()=>{
+                const rect = menu.getBoundingClientRect();
+                const w = menu.offsetWidth;
+                const h = menu.offsetHeight;
+                const left = Math.min(Math.max(rect.left, 0), window.innerWidth - w);
+                const top  = Math.min(Math.max(rect.top , 0), window.innerHeight - h);
+                menu.style.left = left + 'px';
+                menu.style.top  = top  + 'px';
+            });
+
+            // 供開啟時使用：靠近觸發按鈕擺放
+            function positionSettingsNearButton(){
+                const trigger = elements.quickSettingsBtn || elements.settingsBtn;
+                if (!trigger) return;
+                const b = trigger.getBoundingClientRect();
+
+                // 先讓面板暫時可見以量測大小（不會閃爍）
+                const wasHidden = !menu.classList.contains('visible');
+                if (wasHidden) { menu.style.visibility='hidden'; menu.classList.add('visible'); }
+
+                const menuW = menu.offsetWidth, menuH = menu.offsetHeight;
+
+                let left = b.left + b.width + 12;
+                let top  = b.top;
+                left = Math.min(Math.max(12, left), window.innerWidth  - menuW - 12);
+                top  = Math.min(Math.max(12, top ), window.innerHeight - menuH - 12);
+
+                menu.style.left = left + 'px';
+                menu.style.top  = top  + 'px';
+
+                if (wasHidden) { menu.classList.remove('visible'); menu.style.visibility=''; }
+            }
+
+            // 讓外部可呼叫
+            window.positionSettingsNearButton = positionSettingsNearButton;
+            }
+
             // 渲染進度指示器
             function renderProgressIndicator() {
                 if (!elements.progressDots || !MEMOIR_DATA || !MEMOIR_DATA.events) return;
@@ -1794,12 +1911,19 @@
                     showError(`解密失敗: ${errorMessage || '未知錯誤'}`);
                 }
             };
-            
+
             // 切換設定選單
             function toggleSettingsMenu() {
-                if (elements.settingsMenu) {
-                    elements.settingsMenu.classList.toggle('visible');
-                }
+            if (!elements.settingsMenu) return;
+            const menu = elements.settingsMenu;
+
+            menu.classList.add('floating');               // 確保是 fixed 懸浮
+            const willOpen = !menu.classList.contains('visible');
+            menu.classList.toggle('visible');
+
+            if (willOpen && !localStorage.getItem(SETTINGS_POS_KEY)) {
+                window.positionSettingsNearButton && window.positionSettingsNearButton();
+            }
             }
             
             function updateGridToggle() {
@@ -2736,7 +2860,7 @@
     
     <!-- 版權聲明 -->
     <script>
-        console.log('%c🔒 生成時間: 2025-08-13T22:33:20.662398700+00:00', 'color: #6b7280; font-size: 10px;');
+        console.log('%c🔒 生成時間: 2025-08-13T23:04:04.430539700+00:00', 'color: #6b7280; font-size: 10px;');
         console.log('%c🔐 版權所有 © MemoirFlow (加密版)', 'color: #6b7280; font-size: 10px;');
         console.log('%c🛡️ 此內容受 AES-256-GCM 加密保護', 'color: #10b981; font-size: 10px;');
     </script>
