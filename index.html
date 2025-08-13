@@ -1077,13 +1077,32 @@
                 if (elements.quickSettingsBtn) {
                     elements.quickSettingsBtn.addEventListener('click', (e) => {
                         e.preventDefault();
-                        if (elements.settingsMenu) elements.settingsMenu.classList.add('visible');
+                        e.stopPropagation(); // 避免冒泡到 document 被關掉
+                        if (elements.settingsMenu) {
+                        elements.settingsMenu.classList.add('visible');
+                        }
+                        // 開啟設定後把 Dock 收起（可選，但很實用）
+                        if (isDockOpen) {
+                        isDockOpen = false;
+                        localStorage.setItem(DOCK_OPEN_KEY, 'false');
+                        applyDockState(true);
+                        updateDockToggleIcon(true);
+                        }
                     });
                 }
                 if (elements.quickTimelineBtn) {
                     elements.quickTimelineBtn.addEventListener('click', (e) => {
                         e.preventDefault();
-                        showTimeline();
+                        e.stopPropagation();
+                        showTimeline(); // 先打開時間軸
+
+                        // 點完自動把 Dock 收起
+                        if (isDockOpen) {
+                        isDockOpen = false;
+                        localStorage.setItem(DOCK_OPEN_KEY, 'false');
+                        applyDockState(true);
+                        updateDockToggleIcon(true);
+                        }
                     });
                 }
             }
@@ -1613,19 +1632,28 @@
                 
                 // 點擊其他地方關閉設定選單
                 document.addEventListener('click', (e) => {
-                if (elements.settingsMenu) {
-                    elements.settingsMenu.classList.remove('visible');
-                }
-                const clickInsideDock = elements.quickDock?.contains(e.target);
-                const clickOnToggles =
-                    elements.headerToggleBtn?.contains(e.target) ||
-                    elements.mobileHeaderToggleBtn?.contains(e.target);
-                if (!clickInsideDock && !clickOnToggles && isDockOpen) {
-                    isDockOpen = false;
-                    localStorage.setItem(DOCK_OPEN_KEY, 'false');
-                    applyDockState(true);
-                    updateDockToggleIcon(true);
-                }
+                    const clickInsideDock = elements.quickDock?.contains(e.target);
+                    const clickOnToggles =
+                        elements.headerToggleBtn?.contains(e.target) ||
+                        elements.mobileHeaderToggleBtn?.contains(e.target);
+
+                    // ✅ 關設定選單：只有在「不是點在選單內」且「不是點在兩個設定按鈕」時才關
+                    const clickInsideSettings = elements.settingsMenu?.contains(e.target);
+                    const clickOnAnySettingsBtn =
+                        elements.settingsBtn?.contains(e.target) || // header 的齒輪
+                        elements.quickSettingsBtn?.contains(e.target); // Dock 的齒輪
+
+                    if (!clickInsideSettings && !clickOnAnySettingsBtn && elements.settingsMenu) {
+                        elements.settingsMenu.classList.remove('visible');
+                    }
+
+                    // ✅ 關 Dock：點擊 Dock 外且不是切換鈕才關
+                    if (!clickInsideDock && !clickOnToggles && isDockOpen) {
+                        isDockOpen = false;
+                        localStorage.setItem(DOCK_OPEN_KEY, 'false');
+                        applyDockState(true);
+                        updateDockToggleIcon(true);
+                    }
                 });
 
                 // 網格切換
@@ -2708,7 +2736,7 @@
     
     <!-- 版權聲明 -->
     <script>
-        console.log('%c🔒 生成時間: 2025-08-13T22:24:25.947520+00:00', 'color: #6b7280; font-size: 10px;');
+        console.log('%c🔒 生成時間: 2025-08-13T22:33:20.662398700+00:00', 'color: #6b7280; font-size: 10px;');
         console.log('%c🔐 版權所有 © MemoirFlow (加密版)', 'color: #6b7280; font-size: 10px;');
         console.log('%c🛡️ 此內容受 AES-256-GCM 加密保護', 'color: #10b981; font-size: 10px;');
     </script>
