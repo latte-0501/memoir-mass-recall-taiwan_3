@@ -1177,6 +1177,8 @@
 
                 // 初始 Dock 狀態
                 applyDockState(false);
+                // 加這行：依當前 isDockOpen 狀態把圖示定好
+                updateDockToggleIcon(!isDockOpen);
 
                 // 切換按鈕事件（桌面＋手機）
                 if (elements.headerToggleBtn) {
@@ -1246,18 +1248,18 @@
             }
 
             function updateDockToggleIcon(collapsed) {
-                const buttons = [elements.headerToggleBtn, elements.mobileHeaderToggleBtn];
-                buttons.forEach(btn => {
-                    if (!btn) return;
-                    const icon = btn.querySelector('i[data-lucide]');
-                    if (!icon) return;
-                    btn.classList.toggle('collapsed', collapsed);
-                    btn.title = collapsed ? '展開工具列' : '收合工具列';
-                    icon.setAttribute('data-lucide', collapsed ? 'chevron-down' : 'chevron-up');
-                });
-                if (typeof lucide !== 'undefined') {
-                    try { lucide.createIcons(); } catch (e) {}
-                }
+            const buttons = [elements.headerToggleBtn, elements.mobileHeaderToggleBtn];
+            buttons.forEach(btn => {
+                if (!btn) return;
+                const icon = btn.querySelector('i[data-lucide]');
+                if (!icon) return;
+
+                btn.classList.toggle('collapsed', collapsed);
+                btn.title = collapsed ? '展開工具列' : '收合工具列';
+                // ⬇️ 重點：改成左右雙箭頭
+                icon.setAttribute('data-lucide', collapsed ? 'chevrons-right' : 'chevrons-left');
+            });
+            if (typeof lucide !== 'undefined') { try { lucide.createIcons(); } catch (e) {} }
             }
 
             // 新增：Header 收合狀態管理
@@ -1714,15 +1716,7 @@
                 initDock();
                 initDraggableSettingsMenu();
 
-                // 動態調整內容高度
-                // document.addEventListener('DOMContentLoaded', syncMainContentOffset);
-                // window.addEventListener('resize', () => {
-                //     syncMainContentOffset;
-                //     applyMarqueeIfOverflow(document.querySelector('.title-text'));
-                //     applyMarqueeIfOverflow(document.querySelector('.mobile-title'));
-                //     applyMarqueeIfOverflow(elements.eventTitle);
-                //     }
-                // );
+                elements.settingsMenu?.classList.remove('visible'); // 進頁面先關閉
 
                 // 保留跑馬燈功能但移除高度調整
                 window.addEventListener('resize', () => {
@@ -2865,7 +2859,7 @@
     
     <!-- 版權聲明 -->
     <script>
-        console.log('%c🔒 生成時間: 2025-08-13T23:29:41.912207+00:00', 'color: #6b7280; font-size: 10px;');
+        console.log('%c🔒 生成時間: 2025-08-13T23:53:24.367538300+00:00', 'color: #6b7280; font-size: 10px;');
         console.log('%c🔐 版權所有 © MemoirFlow (加密版)', 'color: #6b7280; font-size: 10px;');
         console.log('%c🛡️ 此內容受 AES-256-GCM 加密保護', 'color: #10b981; font-size: 10px;');
     </script>
