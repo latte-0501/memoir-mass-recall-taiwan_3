@@ -693,20 +693,52 @@ body {
 }
 
 /* Settings Menu */
-.settings-menu {
+.settings-menu{
   display: none;
+  position: fixed;            /* 變成懸浮視窗 */
+  z-index: 10000;
+  left: 12px; top: 72px;
+  width: min(340px, calc(100vw - 24px));
+  padding: 12px;
+  border-radius: 14px;
+
+  /* ── 讓它有質感的「玻璃卡片」── */
+  background: rgba(17, 24, 39, 0.88);                 /* 深色半透明 */
+  border: 1px solid rgba(255,255,255,0.08);           /* 細邊框 */
+  box-shadow: 0 10px 40px rgba(0,0,0,.50);            /* 陰影 */
+  color: #e5e7eb;
+
+  /* 背景霧化（Safari 要前綴） */
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+
+  /* 入場動畫 */
+  transform: translateY(6px) scale(.98);
   opacity: 0;
   pointer-events: none;
-  transform: translateY(6px) scale(.98);
-  transition: opacity .2s ease, transform .2s ease;
+  transition: opacity .18s ease, transform .18s ease;
+
+  /* 避免與背後內容混合造成怪異效果 */
+  isolation: isolate;
 }
 
 /* 顯示狀態 */
-.settings-menu.visible {
+.settings-menu.visible{
   display: block;
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0) scale(1);
+}
+
+/* 背景光暈點綴（可刪） */
+.settings-menu::before{
+  content:"";
+  position:absolute; inset:0;
+  border-radius: inherit;
+  background:
+    radial-gradient(120% 80% at 10% -10%, rgba(59,130,246,.18), transparent 40%),
+    radial-gradient(120% 80% at 90% 110%, rgba(16,185,129,.12), transparent 40%);
+  pointer-events: none;
 }
 
 .settings-item {
@@ -2145,7 +2177,32 @@ body {
 /* 拖曳握把（如果你有加） */
 .settings-menu .drag-handle{
   display:flex; align-items:center; gap:8px;
-  padding:10px 12px; border-bottom:1px solid rgba(255,255,255,.06);
-  cursor:grab; user-select:none; touch-action:none;
+  margin:-8px -8px 8px; padding:10px 12px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  border-radius: 12px 12px 0 0;
+  background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0));
+  cursor: grab; user-select:none; touch-action:none;
 }
+
 .settings-menu.dragging .drag-handle{ cursor:grabbing; }
+
+/* 每個設定列 */
+.settings-menu .settings-item{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 12px;
+  border-radius:10px;
+}
+.settings-menu .settings-item + .settings-item{ margin-top:6px; }
+.settings-menu .settings-item:hover{ background: rgba(255,255,255,.04); }
+
+/* 底部按鈕（使用說明等） */
+.settings-menu .settings-btn{
+  width:100%; margin-top:12px;
+  display:flex; align-items:center; gap:8px;
+  padding:10px 12px; border-radius:10px;
+  background: rgba(59,130,246,.12);
+  border: 1px solid rgba(59,130,246,.30);
+  color:#dbeafe;
+}
+.settings-menu .settings-btn:hover{ background: rgba(59,130,246,.18); }
+
