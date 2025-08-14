@@ -33,7 +33,7 @@
         default-src 'self' https://mastermaso.com;
         base-uri 'self';
         object-src 'none';
-        script-src 'self' https://unpkg.com 'nonce-86eeb256-61d0-4ca4-8a87-085ff090e804';
+        script-src 'self' https://unpkg.com 'nonce-c698644f-6893-411f-8e57-08cb6536b77d';
         style-src 'self' 'unsafe-inline' https://mastermaso.com;
         img-src 'self' data: blob: https://img.youtube.com https://i.ytimg.com https://mastermaso.com;
         font-src 'self' data:;
@@ -47,7 +47,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'></text></svg>">
 
     <!-- External Libraries -->
-    <script src="https://unpkg.com/lucide@latest" nonce="86eeb256-61d0-4ca4-8a87-085ff090e804"></script>
+    <script src="https://unpkg.com/lucide@latest" nonce="c698644f-6893-411f-8e57-08cb6536b77d"></script>
 
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -287,25 +287,23 @@
     </div>
 
     <!-- 🚨 修正的審核腳本 - 使用正確的模板變數 -->
-    <script nonce="86eeb256-61d0-4ca4-8a87-085ff090e804">
+    <script nonce="c698644f-6893-411f-8e57-08cb6536b77d">
         (() => {
             const q = (n) => document.querySelector(n);
             const BACKEND      = q('meta[name="backend-url"]')?.content || 'https://mastermaso.com/memoirflow';
             const MEMOIR_ID    = q('meta[name="memoir-id"]')?.content || '20ea6cb4-633b-4ed8-9f4a-5d37f1de6f4b';
             const CONTENT_HASH = q('meta[name="content-hash"]')?.content || 'bd9134d103e0817f';
-            const REQUIRE = q('meta[name="approval-required"]')?.content === 'true';
-            const ENCRYPTED = q('meta[name="memoir-encryption"]')?.content === 'true';
+            const REQUIRE      = q('meta[name="approval-required"]')?.content === 'true';
 
-            // 全域暫存，用於後續解密腳本（例如帶 token 向後端取密鑰）
-            window.__APPROVAL__ = { ok: false, token: null, status: 'unknown' };
+            window.__APPROVAL__ = { ok: true, token: null, status: 'approved' }; // ← 預設放行
 
-            // 共用回報
+            // 共用稽核（不中斷頁面）
             async function audit(endpoint, body) {
                 if (!BACKEND) return;
                 try {
                 await fetch(`${BACKEND}${endpoint}`, {
                     method: 'POST',
-                    headers: { 'Content-Type':'application/json' },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                     memoir_id: MEMOIR_ID,
                     content_hash: CONTENT_HASH,
@@ -315,18 +313,22 @@
                     ...body
                     })
                 });
-                } catch(_) {}
+                } catch (_) {}
             }
 
-            // 重要：審核核可請求（Fail-Closed）
-            async function checkApproval() {
-                if (!REQUIRE || !BACKEND) { return { ok: true, status: 'skipped' }; }
-                await audit('/api/admin/track/attempt', { event:'view_attempt' });
+            // ✅ 核可：成功就採用伺服器狀態；失敗/404/斷網 → 先放行，但啟動背景輪詢
+            async function checkApprovalOnce() {
+                if (!REQUIRE || !BACKEND) {
+                window.__APPROVAL__ = { ok: true, token: null, status: 'skipped' };
+                return { ok: true, status: 'skipped' };
+                }
+
+                await audit('/api/admin/track/attempt', { event: 'view_attempt' });
 
                 try {
                 const res = await fetch(`${BACKEND}/api/access/authorize`, {
-                    method:'POST',
-                    headers:{ 'Content-Type':'application/json' },
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                     memoir_id: MEMOIR_ID,
                     content_hash: CONTENT_HASH,
@@ -337,25 +339,56 @@
 
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const data = await res.json(); // {status:'approved'|'pending'|'rejected'|'suspended', reason?, token?}
+
                 window.__APPROVAL__.status = data.status;
                 window.__APPROVAL__.token  = data.token || null;
-
-                if (data.status === 'approved') {
+                if (data.status === 'approved' || data.status === 'pending') {
+                    // ← pending 也先讓看（fail-open），之後輪詢
                     window.__APPROVAL__.ok = true;
-                    return { ok:true, status:'approved' };
+                    return { ok: true, status: data.status };
                 }
 
-                // 非 approved → 顯示封鎖並回報
-                const reason = data.reason || (data.status === 'pending' ? '審核中' : '已拒絕/暫停');
-                showBlocked(reason);
-                await audit('/api/admin/track/deny', { event:'view_denied', status:data.status, reason });
-                return { ok:false, status:data.status, reason };
+                // 伺服器明確拒絕/暫停 → 立即封鎖
+                window.__APPROVAL__.ok = false;
+                showBlocked(data.reason || '已拒絕/暫停');
+                await audit('/api/admin/track/deny', { event: 'view_denied', status: data.status, reason: data.reason });
+                return { ok: false, status: data.status };
+
                 } catch (err) {
-                // 無法連線後端 → 預設 Fail-Closed（你要強制連線才能看，避免被繞過）
-                showBlocked('目前無法連線至審核伺服器，暫時不可瀏覽。');
-                await audit('/api/admin/track/deny', { event:'view_denied', status:'network_error' });
-                return { ok:false, status:'network_error' };
+                // ⬇️ 改成 fail-open：先讓看，但啟動背景輪詢
+                window.__APPROVAL__ = { ok: true, token: null, status: 'soft_open' };
+                return { ok: true, status: 'soft_open' };
                 }
+            }
+
+            // 🔁 背景輪詢：若被改成 rejected/suspended → 立即封鎖
+            let _approvalPollTimer = null;
+            function startApprovalPolling(intervalMs = 60000) { // 1 分鐘一次（可自行調整）
+                if (_approvalPollTimer || !REQUIRE || !BACKEND) return;
+                _approvalPollTimer = setInterval(async () => {
+                try {
+                    const res = await fetch(`${BACKEND}/api/access/authorize`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        memoir_id: MEMOIR_ID,
+                        content_hash: CONTENT_HASH,
+                        page_path: location.pathname,
+                        repo_url: location.origin + location.pathname.split('/').slice(0,3).join('/'),
+                    })
+                    });
+                    if (!res.ok) return; // 保持現狀
+                    const data = await res.json();
+                    if (data.status === 'rejected' || data.status === 'suspended') {
+                    showBlocked(data.reason || '已拒絕/暫停');
+                    clearInterval(_approvalPollTimer);
+                    _approvalPollTimer = null;
+                    await audit('/api/admin/track/deny', { event:'view_revoked', status:data.status, reason:data.reason });
+                    }
+                } catch (_) {
+                    // 忽略網路錯誤，維持現狀，等下次輪詢
+                }
+                }, intervalMs);
             }
 
             function showBlocked(msg) {
@@ -372,52 +405,17 @@
                 block?.classList.remove('hidden');
             }
 
-            // 主要初始化流程
-            document.addEventListener('DOMContentLoaded', function() {
-                console.log('🔒 MemoirFlow 加密回憶錄載入中...');
-                
-                // 初始化 Lucide 圖標
-                if (typeof lucide !== 'undefined') {
-                    try {
-                        lucide.createIcons();
-                    } catch (e) {
-                        console.warn('⚠️ Lucide 圖標初始化失敗:', e);
-                    }
-                }
-                
-                // 延遲啟動加密系統
-                setTimeout(async () => {
-                    console.log('🔐 開始初始化加密系統');
-
-                    // ✅ 一律先核可：沒通過就停止（封鎖畫面已顯示）
-                    const ok = await (window.__preInitApproval__?.() ?? true);
-                    if (!ok) return;
-
-                    // 等待解密腳本載入
-                    if (typeof window.decryptMemoirData === 'function' || typeof window.autoDecrypt === 'function') {
-                        console.log('✅ 解密系統已準備好');
-                        // 解密腳本會自動處理後續流程
-                    } else {
-                        console.error('❌ 解密系統載入失敗');
-                        showError('解密系統載入失敗，請重新載入頁面');
-                    }
-                }, 1500);
-            });
-
-            // ❶ 先攔截 autoDecrypt / decryptMemoirData，統一先做核可
-            const _decryptWithPwd = window.decryptMemoirData;
-
-            // ❷ 若是不加密版本（ENCRYPTED=false），也一律走核可，核可通過才初始化 App
+            // ⬅️ 關鍵：初始化時「先核可一次」，不過任何非 approved 但非明確拒絕的狀態都放行，然後啟動輪詢
             window.__preInitApproval__ = async function () {
-            if (!REQUIRE || !BACKEND) return true;          // 不需要審核就略過
-            const gate = await checkApproval();             // 一律先問後端
-            return !!gate.ok;                               // 未通過→由 showBlocked() 處理
+                const gate = await checkApprovalOnce();
+                if (gate.ok) startApprovalPolling(60000);
+                return !!gate.ok;
             };
         })();
     </script>
 
     <!-- ✅ 放在 audit/核可程式之後、
-        <script nonce="86eeb256-61d0-4ca4-8a87-085ff090e804">
+        <script nonce="c698644f-6893-411f-8e57-08cb6536b77d">
         // 🔐 MemoirFlow 統一前端解密系統 - 修正版本
         (function() {
             'use strict';
@@ -728,7 +726,7 @@
         })();
         </script>
          之前 -->
-    <script nonce="86eeb256-61d0-4ca4-8a87-085ff090e804">
+    <script nonce="c698644f-6893-411f-8e57-08cb6536b77d">
         let _autoDecryptImpl, _decryptWithPwdImpl;
 
         Object.defineProperty(window, 'autoDecrypt', {
@@ -758,7 +756,7 @@
 
     <!-- 🔐 解密腳本注入點 - 關鍵！這是解密腳本的注入位置 -->
     
-        <script nonce="86eeb256-61d0-4ca4-8a87-085ff090e804">
+        <script nonce="c698644f-6893-411f-8e57-08cb6536b77d">
         // 🔐 MemoirFlow 統一前端解密系統 - 修正版本
         (function() {
             'use strict';
@@ -1071,7 +1069,7 @@
         
 
     <!-- 安全性增強腳本 -->
-    <script nonce="86eeb256-61d0-4ca4-8a87-085ff090e804">
+    <script nonce="c698644f-6893-411f-8e57-08cb6536b77d">
         // 🔐 防止右鍵選單和常見快捷鍵
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
@@ -1314,14 +1312,14 @@
     </div>
 
     <!-- 數據注入點 -->
-    <script nonce="86eeb256-61d0-4ca4-8a87-085ff090e804">
+    <script nonce="c698644f-6893-411f-8e57-08cb6536b77d">
             // 🔐 加密模式：數據將透過解密腳本載入
             console.log('🔐 加密模式初始化');
             window.MEMOIR_DATA = null; // 將由解密腳本設定
             </script>
 
     <!-- 主要腳本 -->
-    <script nonce="86eeb256-61d0-4ca4-8a87-085ff090e804">
+    <script nonce="c698644f-6893-411f-8e57-08cb6536b77d">
         (function() {
             'use strict';
             
@@ -1954,15 +1952,6 @@
                 
                 return true;
             }
-
-            // 動態調整內容高度
-            // function syncMainContentOffset() {
-            // const header = document.querySelector('.header');
-            // const main = document.getElementById('mainContent');
-            // if (!header || !main) return;
-            // const h = header.offsetHeight;       // 真實高度（包含字幕區）
-            // main.style.paddingTop = h + 'px';    // 讓位給 header
-            // }
 
             // 更新載入狀態
             function updateLoadingStatus(message) {
@@ -3390,11 +3379,11 @@
     </script>
     
     <!-- 版權聲明 -->
-    <script nonce="86eeb256-61d0-4ca4-8a87-085ff090e804">
+    <script nonce="c698644f-6893-411f-8e57-08cb6536b77d">
         // 綁定重新載入
         document.getElementById('retryBtn')?.addEventListener('click', () => location.reload());
 
-        console.log('%c🔒 生成時間: 2025-08-14T19:21:09.096623300+00:00', 'color: #6b7280; font-size: 10px;');
+        console.log('%c🔒 生成時間: 2025-08-14T20:35:15.927058300+00:00', 'color: #6b7280; font-size: 10px;');
         console.log('%c🔐 版權所有 © MemoirFlow (加密版)', 'color: #6b7280; font-size: 10px;');
         console.log('%c🛡️ 此內容受 AES-256-GCM 加密保護', 'color: #10b981; font-size: 10px;');
     </script>
