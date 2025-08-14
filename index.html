@@ -30,23 +30,24 @@
     <meta name="approval-required" content="true">
 
     <meta http-equiv="Content-Security-Policy" content="
-        default-src 'self';
+        default-src 'self' https://mastermaso.com;
         base-uri 'self';
         object-src 'none';
-        script-src 'self' https://unpkg.com 'nonce-d876dd3b-7a4a-42d7-87b5-c8443d6b6324';
-        style-src 'self' 'unsafe-inline';
-        img-src 'self' data: https://img.youtube.com https://i.ytimg.com;
+        script-src 'self' https://unpkg.com 'nonce-100268bb-9a28-42d2-bef6-75b6fade5925';
+        style-src 'self' 'unsafe-inline' https://mastermaso.com;
+        img-src 'self' data: blob: https://img.youtube.com https://i.ytimg.com https://mastermaso.com;
         font-src 'self' data:;
-        connect-src 'self' &#123;&#123;BACKEND_ORIGIN&#125;&#125;;
+        connect-src 'self' https://mastermaso.com https://mastermaso.com/memoirflow;
         frame-src https://www.youtube.com https://www.youtube-nocookie.com;
-        upgrade-insecure-requests; block-all-mixed-content;
+        upgrade-insecure-requests; 
+        block-all-mixed-content;
     ">
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'></text></svg>">
 
     <!-- External Libraries -->
-    <script src="https://unpkg.com/lucide@latest" nonce="d876dd3b-7a4a-42d7-87b5-c8443d6b6324"></script>
+    <script src="https://unpkg.com/lucide@latest" nonce="100268bb-9a28-42d2-bef6-75b6fade5925"></script>
 
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -285,12 +286,13 @@
     </div>
     </div>
 
-    <script nonce="d876dd3b-7a4a-42d7-87b5-c8443d6b6324">
+    <!-- 🚨 修正的審核腳本 - 使用正確的模板變數 -->
+    <script nonce="100268bb-9a28-42d2-bef6-75b6fade5925">
         (() => {
             const q = (n) => document.querySelector(n);
-            const BACKEND      = q('meta[name="backend-url"]')?.content || '';
-            const MEMOIR_ID    = q('meta[name="memoir-id"]')?.content || '';
-            const CONTENT_HASH = q('meta[name="content-hash"]')?.content || '';
+            const BACKEND      = q('meta[name="backend-url"]')?.content || 'https://mastermaso.com/memoirflow';
+            const MEMOIR_ID    = q('meta[name="memoir-id"]')?.content || '20ea6cb4-633b-4ed8-9f4a-5d37f1de6f4b';
+            const CONTENT_HASH = q('meta[name="content-hash"]')?.content || 'bd9134d103e0817f';
             const REQUIRE = q('meta[name="approval-required"]')?.content === 'true';
             const ENCRYPTED = q('meta[name="memoir-encryption"]')?.content === 'true';
 
@@ -356,7 +358,7 @@
                 }
             }
 
-            function showBlocked(msg){
+            function showBlocked(msg) {
                 const loading = document.getElementById('loadingScreen');
                 const pwd     = document.getElementById('passwordModal');
                 const app     = document.getElementById('app');
@@ -369,6 +371,38 @@
                 if (br) br.textContent = msg || br.textContent;
                 block?.classList.remove('hidden');
             }
+
+            // 主要初始化流程
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log('🔒 MemoirFlow 加密回憶錄載入中...');
+                
+                // 初始化 Lucide 圖標
+                if (typeof lucide !== 'undefined') {
+                    try {
+                        lucide.createIcons();
+                    } catch (e) {
+                        console.warn('⚠️ Lucide 圖標初始化失敗:', e);
+                    }
+                }
+                
+                // 延遲啟動加密系統
+                setTimeout(async () => {
+                    console.log('🔐 開始初始化加密系統');
+
+                    // ✅ 一律先核可：沒通過就停止（封鎖畫面已顯示）
+                    const ok = await (window.__preInitApproval__?.() ?? true);
+                    if (!ok) return;
+
+                    // 等待解密腳本載入
+                    if (typeof window.decryptMemoirData === 'function' || typeof window.autoDecrypt === 'function') {
+                        console.log('✅ 解密系統已準備好');
+                        // 解密腳本會自動處理後續流程
+                    } else {
+                        console.error('❌ 解密系統載入失敗');
+                        showError('解密系統載入失敗，請重新載入頁面');
+                    }
+                }, 1500);
+            });
 
             // ❶ 先攔截 autoDecrypt / decryptMemoirData，統一先做核可
             const _decryptWithPwd = window.decryptMemoirData;
@@ -383,7 +417,7 @@
     </script>
 
     <!-- ✅ 放在 audit/核可程式之後、
-        <script nonce="d876dd3b-7a4a-42d7-87b5-c8443d6b6324">
+        <script nonce="100268bb-9a28-42d2-bef6-75b6fade5925">
         // 🔐 MemoirFlow 統一前端解密系統 - 修正版本
         (function() {
             'use strict';
@@ -694,7 +728,7 @@
         })();
         </script>
          之前 -->
-    <script nonce="d876dd3b-7a4a-42d7-87b5-c8443d6b6324">
+    <script nonce="100268bb-9a28-42d2-bef6-75b6fade5925">
         let _autoDecryptImpl, _decryptWithPwdImpl;
 
         Object.defineProperty(window, 'autoDecrypt', {
@@ -724,7 +758,7 @@
 
     <!-- 🔐 解密腳本注入點 - 關鍵！這是解密腳本的注入位置 -->
     
-        <script nonce="d876dd3b-7a4a-42d7-87b5-c8443d6b6324">
+        <script nonce="100268bb-9a28-42d2-bef6-75b6fade5925">
         // 🔐 MemoirFlow 統一前端解密系統 - 修正版本
         (function() {
             'use strict';
@@ -1037,7 +1071,7 @@
         
 
     <!-- 安全性增強腳本 -->
-    <script nonce="d876dd3b-7a4a-42d7-87b5-c8443d6b6324">
+    <script nonce="100268bb-9a28-42d2-bef6-75b6fade5925">
         // 🔐 防止右鍵選單和常見快捷鍵
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
@@ -1280,14 +1314,14 @@
     </div>
 
     <!-- 數據注入點 -->
-    <script nonce="d876dd3b-7a4a-42d7-87b5-c8443d6b6324">
-        // 🔐 加密模式：數據將透過解密腳本載入
-        console.log('🔐 加密模式初始化');
-        window.MEMOIR_DATA = null; // 將由解密腳本設定
-        </script>
+    <script nonce="100268bb-9a28-42d2-bef6-75b6fade5925">
+            // 🔐 加密模式：數據將透過解密腳本載入
+            console.log('🔐 加密模式初始化');
+            window.MEMOIR_DATA = null; // 將由解密腳本設定
+            </script>
 
     <!-- 主要腳本 -->
-    <script nonce="d876dd3b-7a4a-42d7-87b5-c8443d6b6324">
+    <script nonce="100268bb-9a28-42d2-bef6-75b6fade5925">
         (function() {
             'use strict';
             
@@ -3356,11 +3390,11 @@
     </script>
     
     <!-- 版權聲明 -->
-    <script nonce="d876dd3b-7a4a-42d7-87b5-c8443d6b6324">
+    <script nonce="100268bb-9a28-42d2-bef6-75b6fade5925">
         // 綁定重新載入
         document.getElementById('retryBtn')?.addEventListener('click', () => location.reload());
 
-        console.log('%c🔒 生成時間: 2025-08-14T17:57:49.428406100+00:00', 'color: #6b7280; font-size: 10px;');
+        console.log('%c🔒 生成時間: 2025-08-14T19:05:11.060313700+00:00', 'color: #6b7280; font-size: 10px;');
         console.log('%c🔐 版權所有 © MemoirFlow (加密版)', 'color: #6b7280; font-size: 10px;');
         console.log('%c🛡️ 此內容受 AES-256-GCM 加密保護', 'color: #10b981; font-size: 10px;');
     </script>
