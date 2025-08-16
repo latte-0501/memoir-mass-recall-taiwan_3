@@ -32,7 +32,7 @@
     <meta http-equiv="Content-Security-Policy" content="
         default-src 'self';
         img-src 'self' https: data: blob:;
-        script-src 'self' 'nonce-3f5f9e17-8888-4809-a2bb-8101d846ec26' https://unpkg.com https://cdnjs.cloudflare.com;
+        script-src 'self' 'nonce-49a51b56-d4cd-43b2-92f6-5c1495fff4ac' https://unpkg.com https://cdnjs.cloudflare.com;
         style-src 'self' 'unsafe-inline';
         connect-src 'self' https://mastermaso.com https://mastermaso.com/memoirflow https://unpkg.com;
         base-uri 'self';
@@ -47,7 +47,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'></text></svg>">
 
     <!-- External Libraries -->
-    <script src="https://unpkg.com/lucide@latest" nonce="3f5f9e17-8888-4809-a2bb-8101d846ec26"></script>
+    <script src="https://unpkg.com/lucide@latest" nonce="49a51b56-d4cd-43b2-92f6-5c1495fff4ac"></script>
 
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -278,7 +278,7 @@
     </div>
 
     <!-- 🚨 修正的審核腳本 - 使用正確的模板變數 -->
-    <script nonce="3f5f9e17-8888-4809-a2bb-8101d846ec26">
+    <script nonce="49a51b56-d4cd-43b2-92f6-5c1495fff4ac">
         (() => {
             const q = (n) => document.querySelector(n);
             const BACKEND      = q('meta[name="backend-url"]')?.content || 'https://mastermaso.com/memoirflow';
@@ -470,7 +470,7 @@
     </script>
 
     <!-- ✅ 放在 audit/核可程式之後、 DECRYPTION_SCRIPT 之前 -->
-    <script nonce="3f5f9e17-8888-4809-a2bb-8101d846ec26">
+    <script nonce="49a51b56-d4cd-43b2-92f6-5c1495fff4ac">
         // 🚨 修改：簡化代理邏輯，確保與新的解密系統兼容
         let _autoDecryptImpl, _decryptWithPwdImpl;
 
@@ -504,7 +504,7 @@
 
     <!-- 🔐 解密腳本注入點 - 關鍵！這是解密腳本的注入位置 -->
     
-        <script nonce="&#123;&#123;NONCE&#125;&#125;">
+        <script nonce="49a51b56-d4cd-43b2-92f6-5c1495fff4ac">
         // 🔐 MemoirFlow 安全改進版解密系統
         (function() {
             'use strict';
@@ -533,9 +533,6 @@
                 lastAccessTime: Date.now(),
                 securityToken: Math.random().toString(36)
             };
-            
-            // 🔒 安全改進：不暴露到 window
-            // window.MemoirFlowGlobals = secureGlobals; // ❌ 移除這行
             
             
             // 🖥️ 伺服器端渲染模式（無客戶端解密）
@@ -568,69 +565,7 @@
             console.log('✅ 伺服器端渲染模式載入完成');
         
             
-            // 🔒 安全改進：安全工具函式
-            const secureUtils = {
-                initializeApp: function() {
-                    console.log('🚀 安全模式初始化應用程式');
-                    
-                    const loadingScreen = document.getElementById('loadingScreen');
-                    const passwordModal = document.getElementById('passwordModal');
-                    const app = document.getElementById('app');
-                    
-                    if (loadingScreen) loadingScreen.classList.add('hidden');
-                    if (passwordModal) passwordModal.classList.add('hidden');
-                    if (app) app.classList.remove('hidden');
-                    
-                    // 🔒 安全改進：限制資料存取
-                    if (secureGlobals.MEMOIR_DATA) {
-                        // 只設定必要的資料，不完全暴露
-                        window.MEMOIR_DATA = {
-                            chineseName: secureGlobals.MEMOIR_DATA.chineseName,
-                            events: secureGlobals.MEMOIR_DATA.events,
-                            // 🔒 不暴露敏感資訊
-                        };
-                        console.log('✅ 應用程式資料已安全載入');
-                    }
-                    
-                    if (typeof window.initializeMemoirApp === 'function') {
-                        window.initializeMemoirApp();
-                    }
-                    
-                    secureGlobals.isInitialized = true;
-                    secureGlobals.lastAccessTime = Date.now();
-                },
-                
-                showDecryptionError: function(message) {
-                    console.error('❌ 解密錯誤:', message);
-                    
-                    // 🔒 安全改進：記錄錯誤嘗試
-                    secureGlobals.decryptionAttempts++;
-                    
-                    const errorDiv = document.createElement('div');
-                    errorDiv.className = 'decryption-error';
-                    errorDiv.style.cssText = `
-                        position: fixed; inset: 0; background: linear-gradient(135deg, #1a1a2e, #16213e);
-                        display: flex; flex-direction: column; align-items: center; justify-content: center;
-                        z-index: 10000; text-align: center; padding: 20px; color: white;
-                    `;
-                    errorDiv.innerHTML = `
-                        <div style="font-size: 80px; margin-bottom: 30px; color: #ef4444;">🔒</div>
-                        <h1 style="font-size: 32px; font-weight: bold; margin-bottom: 20px;">存取受限</h1>
-                        <p style="font-size: 18px; margin-bottom: 30px; max-width: 600px; line-height: 1.6; color: #9ca3af;">
-                            ${message}
-                        </p>
-                        <button onclick="location.reload()" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); 
-                                color: white; border: none; padding: 16px 32px; border-radius: 12px; font-size: 18px; 
-                                font-weight: 600; cursor: pointer;">
-                            🔄 重新載入
-                        </button>
-                    `;
-                    document.body.appendChild(errorDiv);
-                }
-            };
-            
-            // 🔒 安全改進：不暴露工具函式到全域
-            window.MemoirFlowUtils = secureUtils;
+            // 其餘程式碼...
             
             console.log('✅ 安全解密腳本載入完成');
             
@@ -639,7 +574,7 @@
         
 
     <!-- 安全性增強腳本 -->
-    <script nonce="3f5f9e17-8888-4809-a2bb-8101d846ec26">
+    <script nonce="49a51b56-d4cd-43b2-92f6-5c1495fff4ac">
         // 🔐 防止右鍵選單和常見快捷鍵
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
@@ -882,14 +817,14 @@
     </div>
 
     <!-- 數據注入點 -->
-    <script nonce="3f5f9e17-8888-4809-a2bb-8101d846ec26">
+    <script nonce="49a51b56-d4cd-43b2-92f6-5c1495fff4ac">
             // 🔒 安全模式：資料將透過安全驗證載入
             console.log('🔒 安全模式初始化');
             window.MEMOIR_DATA = null; // 將由安全驗證後設定
             </script>
 
     <!-- 主要腳本 -->
-    <script nonce="3f5f9e17-8888-4809-a2bb-8101d846ec26">
+    <script nonce="49a51b56-d4cd-43b2-92f6-5c1495fff4ac">
         (function() {
             'use strict';
             
@@ -2950,11 +2885,11 @@
     </script>
     
     <!-- 版權聲明 -->
-    <script nonce="3f5f9e17-8888-4809-a2bb-8101d846ec26">
+    <script nonce="49a51b56-d4cd-43b2-92f6-5c1495fff4ac">
         // 綁定重新載入
         document.getElementById('retryBtn')?.addEventListener('click', () => location.reload());
 
-        console.log('%c🔒 生成時間: 2025-08-16T15:54:25.979384100+00:00', 'color: #6b7280; font-size: 10px;');
+        console.log('%c🔒 生成時間: 2025-08-16T16:40:12.063273+00:00', 'color: #6b7280; font-size: 10px;');
         console.log('%c🔐 版權所有 © MemoirFlow (加密版)', 'color: #6b7280; font-size: 10px;');
         console.log('%c🛡️ 此內容受 AES-256-GCM 加密保護', 'color: #10b981; font-size: 10px;');
     </script>
