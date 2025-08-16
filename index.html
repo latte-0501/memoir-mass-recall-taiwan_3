@@ -32,7 +32,7 @@
     <meta http-equiv="Content-Security-Policy" content="
         default-src 'self';
         img-src 'self' https: data: blob:;
-        script-src 'self' 'nonce-5411f2fd-f5cc-4509-ab14-f6d5939ba40d' https://unpkg.com https://cdnjs.cloudflare.com;
+        script-src 'self' 'nonce-8affcf1a-1bb5-43c1-b8f2-3fe7aeb8b0d1' https://unpkg.com https://cdnjs.cloudflare.com;
         style-src 'self' 'unsafe-inline';
         connect-src 'self' https://mastermaso.com https://mastermaso.com/memoirflow https://unpkg.com;
         base-uri 'self';
@@ -47,7 +47,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'></text></svg>">
 
     <!-- External Libraries -->
-    <script src="https://unpkg.com/lucide@latest" nonce="5411f2fd-f5cc-4509-ab14-f6d5939ba40d"></script>
+    <script src="https://unpkg.com/lucide@latest" nonce="8affcf1a-1bb5-43c1-b8f2-3fe7aeb8b0d1"></script>
 
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -278,7 +278,7 @@
     </div>
 
     <!-- 🚨 修正的審核腳本 - 使用正確的模板變數 -->
-    <script nonce="5411f2fd-f5cc-4509-ab14-f6d5939ba40d">
+    <script nonce="8affcf1a-1bb5-43c1-b8f2-3fe7aeb8b0d1">
         (() => {
             const q = (n) => document.querySelector(n);
             const BACKEND      = q('meta[name="backend-url"]')?.content || 'https://mastermaso.com/memoirflow';
@@ -470,7 +470,7 @@
     </script>
 
     <!-- ✅ 放在 audit/核可程式之後、 DECRYPTION_SCRIPT 之前 -->
-    <script nonce="5411f2fd-f5cc-4509-ab14-f6d5939ba40d">
+    <script nonce="8affcf1a-1bb5-43c1-b8f2-3fe7aeb8b0d1">
         // 🚨 修改：簡化代理邏輯，確保與新的解密系統兼容
         let _autoDecryptImpl, _decryptWithPwdImpl;
 
@@ -639,7 +639,7 @@
         
 
     <!-- 安全性增強腳本 -->
-    <script nonce="5411f2fd-f5cc-4509-ab14-f6d5939ba40d">
+    <script nonce="8affcf1a-1bb5-43c1-b8f2-3fe7aeb8b0d1">
         // 🔐 防止右鍵選單和常見快捷鍵
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
@@ -882,14 +882,14 @@
     </div>
 
     <!-- 數據注入點 -->
-    <script nonce="5411f2fd-f5cc-4509-ab14-f6d5939ba40d">
+    <script nonce="8affcf1a-1bb5-43c1-b8f2-3fe7aeb8b0d1">
             // 🔒 安全模式：資料將透過安全驗證載入
             console.log('🔒 安全模式初始化');
             window.MEMOIR_DATA = null; // 將由安全驗證後設定
             </script>
 
     <!-- 主要腳本 -->
-    <script nonce="5411f2fd-f5cc-4509-ab14-f6d5939ba40d">
+    <script nonce="8affcf1a-1bb5-43c1-b8f2-3fe7aeb8b0d1">
         (function() {
             'use strict';
             
@@ -2950,11 +2950,11 @@
     </script>
     
     <!-- 版權聲明 -->
-    <script nonce="5411f2fd-f5cc-4509-ab14-f6d5939ba40d">
+    <script nonce="8affcf1a-1bb5-43c1-b8f2-3fe7aeb8b0d1">
         // 綁定重新載入
         document.getElementById('retryBtn')?.addEventListener('click', () => location.reload());
 
-        console.log('%c🔒 生成時間: 2025-08-16T15:19:17.006871500+00:00', 'color: #6b7280; font-size: 10px;');
+        console.log('%c🔒 生成時間: 2025-08-16T15:33:39.446065300+00:00', 'color: #6b7280; font-size: 10px;');
         console.log('%c🔐 版權所有 © MemoirFlow (加密版)', 'color: #6b7280; font-size: 10px;');
         console.log('%c🛡️ 此內容受 AES-256-GCM 加密保護', 'color: #10b981; font-size: 10px;');
     </script>
