@@ -32,7 +32,7 @@
     <meta http-equiv="Content-Security-Policy" content="
         default-src 'self';
         img-src 'self' https: data: blob:;
-        script-src 'self' 'nonce-337903ca-3e48-4842-a9b7-db76e8508d70' https://unpkg.com https://cdnjs.cloudflare.com;
+        script-src 'self' 'nonce-920d2a79-3b69-44b3-bbb1-d43101931e74' https://unpkg.com https://cdnjs.cloudflare.com;
         style-src 'self' 'unsafe-inline';
         connect-src 'self' https://mastermaso.com https://mastermaso.com/memoirflow https://unpkg.com;
         base-uri 'self';
@@ -47,7 +47,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'></text></svg>">
 
     <!-- External Libraries -->
-    <script src="https://unpkg.com/lucide@latest" nonce="337903ca-3e48-4842-a9b7-db76e8508d70"></script>
+    <script src="https://unpkg.com/lucide@latest" nonce="920d2a79-3b69-44b3-bbb1-d43101931e74"></script>
 
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -278,7 +278,7 @@
     </div>
 
     <!-- 🚨 修正的審核腳本 - 使用正確的模板變數 -->
-    <script nonce="337903ca-3e48-4842-a9b7-db76e8508d70">
+    <script nonce="920d2a79-3b69-44b3-bbb1-d43101931e74">
         (() => {
             const q = (n) => document.querySelector(n);
             const BACKEND      = q('meta[name="backend-url"]')?.content || 'https://mastermaso.com/memoirflow';
@@ -481,7 +481,7 @@
     </script>
 
     <!-- ✅ 放在 audit/核可程式之後、 DECRYPTION_SCRIPT 之前 -->
-    <script nonce="337903ca-3e48-4842-a9b7-db76e8508d70">
+    <script nonce="920d2a79-3b69-44b3-bbb1-d43101931e74">
         // === 修正版：autoDecrypt 代理 ===
         let _autoDecryptImpl, _decryptWithPwdImpl;
         let __HAS_AUTO_DECRYPT_IMPL__ = false;
@@ -517,7 +517,7 @@
 
     <!-- 🔐 解密腳本注入點 - 關鍵！這是解密腳本的注入位置 -->
     
-        <script nonce="337903ca-3e48-4842-a9b7-db76e8508d70">
+        <script nonce="920d2a79-3b69-44b3-bbb1-d43101931e74">
         // 🔐 MemoirFlow 安全改進版解密系統
         (function() {
             'use strict';
@@ -587,7 +587,7 @@
         
 
     <!-- 安全性增強腳本 -->
-    <script nonce="337903ca-3e48-4842-a9b7-db76e8508d70">
+    <script nonce="920d2a79-3b69-44b3-bbb1-d43101931e74">
         // 🔐 防止右鍵選單和常見快捷鍵
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
@@ -830,7 +830,7 @@
     </div>
 
     <!-- 等待伺服器解密結果的橋接器（server 模式用） -->
-    <script nonce="337903ca-3e48-4842-a9b7-db76e8508d70">
+    <script nonce="920d2a79-3b69-44b3-bbb1-d43101931e74">
     // 當 server 模式時，先不要啟動 App，等收到解密資料再啟動
     window.__bootApp__ = function bootAppWhenReady() {
         try {
@@ -851,7 +851,7 @@
         }
     });
 
-    // 若是靜態/密碼模式，稍後 <script id="preloaded-memoir-data" type="application/json" nonce="337903ca-3e48-4842-a9b7-db76e8508d70">null</script> 會直接注入資料 → 這裡也會啟動
+    // 若是靜態/密碼模式，稍後 <script id="preloaded-memoir-data" type="application/json" nonce="920d2a79-3b69-44b3-bbb1-d43101931e74">null</script> 會直接注入資料 → 這裡也會啟動
     document.addEventListener('DOMContentLoaded', () => {
         // 如果已經有 MEMOIR_DATA（例如密碼模式或預載 JSON），就直接啟動
         if (window.MEMOIR_DATA && window.MEMOIR_DATA.events) {
@@ -861,10 +861,10 @@
     </script>
 
     <!-- 數據注入點 -->
-    <script id="preloaded-memoir-data" type="application/json" nonce="337903ca-3e48-4842-a9b7-db76e8508d70">null</script>
+    <script id="preloaded-memoir-data" type="application/json" nonce="920d2a79-3b69-44b3-bbb1-d43101931e74">null</script>
 
     <!-- 主要腳本 -->
-    <script nonce="337903ca-3e48-4842-a9b7-db76e8508d70">
+    <script nonce="920d2a79-3b69-44b3-bbb1-d43101931e74">
         (function() {
             'use strict';
             
@@ -1950,7 +1950,12 @@
                 
                 // 初始化應用程式
                 setTimeout(() => {
-                    initializeApp();
+                    if (typeof window.__bootApp__ === 'function') {
+                        window.__bootApp__(); // 有 MEMOIR_DATA 就會立刻啟動；沒有就不啟動
+                    } else {
+                        // 極少數情況橋接器尚未掛好，退回直接呼叫（搭配修改 1 也不會噴錯）
+                        initializeApp();
+                    }
                 }, 500);
             };
             
@@ -2804,7 +2809,12 @@
                         if (window.MEMOIR_DATA) {
                             MEMOIR_DATA = window.MEMOIR_DATA;
                         } else {
-                            throw new Error('MEMOIR_DATA 未定義');
+                            console.warn('MEMOIR_DATA 尚未就緒，稍後重試啟動…');
+                            // 交給 boot 橋接器在資料到時再重啟，避免直接噴錯
+                            if (typeof window.__bootApp__ === 'function') {
+                                setTimeout(() => window.__bootApp__(), 500);
+                            }
+                            return; // ← 這行很重要：不要拋錯、直接結束
                         }
                     }
                     
@@ -2942,6 +2952,9 @@
                     // 初始化前端加密環境（你原本的函式）
                     const initOK = initializeEncryption();
                     if (!initOK) return;
+                    if (!window.__bootApp__ || !window.__bootApp__()) {
+                    console.warn('MEMOIR_DATA 尚未就緒，等待解密…');
+                    }
 
                     const mode = getMode();
 
@@ -3005,11 +3018,11 @@
     </script>
     
     <!-- 版權聲明 -->
-    <script nonce="337903ca-3e48-4842-a9b7-db76e8508d70">
+    <script nonce="920d2a79-3b69-44b3-bbb1-d43101931e74">
         // 綁定重新載入
         document.getElementById('retryBtn')?.addEventListener('click', () => location.reload());
 
-        console.log('%c🔒 生成時間: 2025-08-16T17:49:11.783175600+00:00', 'color: #6b7280; font-size: 10px;');
+        console.log('%c🔒 生成時間: 2025-08-16T18:00:43.314480400+00:00', 'color: #6b7280; font-size: 10px;');
         console.log('%c🔐 版權所有 © MemoirFlow (加密版)', 'color: #6b7280; font-size: 10px;');
         console.log('%c🛡️ 此內容受 AES-256-GCM 加密保護', 'color: #10b981; font-size: 10px;');
     </script>
