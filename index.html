@@ -32,7 +32,7 @@
     <meta http-equiv="Content-Security-Policy" content="
         default-src 'self';
         img-src 'self' https: data: blob:;
-        script-src 'self' 'nonce-49a51b56-d4cd-43b2-92f6-5c1495fff4ac' https://unpkg.com https://cdnjs.cloudflare.com;
+        script-src 'self' 'nonce-67e371d4-5594-4938-9da2-5cd8be13da5d' https://unpkg.com https://cdnjs.cloudflare.com;
         style-src 'self' 'unsafe-inline';
         connect-src 'self' https://mastermaso.com https://mastermaso.com/memoirflow https://unpkg.com;
         base-uri 'self';
@@ -47,7 +47,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'></text></svg>">
 
     <!-- External Libraries -->
-    <script src="https://unpkg.com/lucide@latest" nonce="49a51b56-d4cd-43b2-92f6-5c1495fff4ac"></script>
+    <script src="https://unpkg.com/lucide@latest" nonce="67e371d4-5594-4938-9da2-5cd8be13da5d"></script>
 
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -278,7 +278,7 @@
     </div>
 
     <!-- 🚨 修正的審核腳本 - 使用正確的模板變數 -->
-    <script nonce="49a51b56-d4cd-43b2-92f6-5c1495fff4ac">
+    <script nonce="67e371d4-5594-4938-9da2-5cd8be13da5d">
         (() => {
             const q = (n) => document.querySelector(n);
             const BACKEND      = q('meta[name="backend-url"]')?.content || 'https://mastermaso.com/memoirflow';
@@ -452,51 +452,64 @@
 
             // ⬅️ 關鍵：初始化時「先核可一次」
             window.__preInitApproval__ = async function () {
-                console.log('🔍 開始預初始化審核檢查');
-                const gate = await checkApprovalOnce();
-                console.log('🔍 審核檢查結果:', gate);
-                
-                if (gate.ok) {
-                    console.log('✅ 審核通過，啟動輪詢');
+                // 加入 5 秒逾時
+                const withTimeout = (p, ms=5000) => Promise.race([
+                    p, new Promise((_, r) => setTimeout(()=>r(new Error('timeout')), ms))
+                ]);
+
+                try {
+                    const gate = await withTimeout(checkApprovalOnce(), 5000);
+                    if (gate?.ok) {
                     startApprovalPolling(60000);
-                } else {
+                    return true;
+                    }
                     console.log('❌ 審核未通過，停止所有流程');
                     return false;
+                } catch (e) {
+                    console.warn('⚠️ 核可檢查失敗/逾時：', e?.message || e);
+                    // 可選：若為密碼模式，直接顯示密碼 modal 作為回退
+                    if (window.requiresPassword === true) {
+                    window.showPasswordPrompt('伺服器連線異常，請先以密碼解鎖');
+                    return true; // 讓流程往下跑顯示 UI
+                    }
+                    // 其他情況：顯示錯誤（避免永遠轉圈）
+                    showError('核可服務連線異常，請稍後重試');
+                    return false;
                 }
-                
-                return !!gate.ok;
             };
         })();
     </script>
 
     <!-- ✅ 放在 audit/核可程式之後、 DECRYPTION_SCRIPT 之前 -->
-    <script nonce="49a51b56-d4cd-43b2-92f6-5c1495fff4ac">
-        // 🚨 修改：簡化代理邏輯，確保與新的解密系統兼容
+    <script nonce="67e371d4-5594-4938-9da2-5cd8be13da5d">
+        // === 修正版：autoDecrypt 代理 ===
         let _autoDecryptImpl, _decryptWithPwdImpl;
+        let __HAS_AUTO_DECRYPT_IMPL__ = false;
+        let __HAS_DECRYPT_WITH_PWD_IMPL__ = false;
 
-        // 🚨 重要：確保解密系統能正常執行
         Object.defineProperty(window, 'autoDecrypt', {
             configurable: true,
-            set(fn) { _autoDecryptImpl = fn; },
+            set(fn) { _autoDecryptImpl = fn; __HAS_AUTO_DECRYPT_IMPL__ = true; },
             get() {
+                // ⚠️ 關鍵：尚未注入真實實作時，回傳 undefined
+                if (!__HAS_AUTO_DECRYPT_IMPL__) return undefined;
                 return async (opts = {}) => {
-                    // 🚨 修改：如果審核檢查功能不存在，直接執行解密
-                    const ok = await (window.__preInitApproval__?.() ?? true);
-                    if (!ok) return;
-                    return _autoDecryptImpl?.({ ...opts, approvalToken: window.__APPROVAL__?.token });
+                const ok = await (window.__preInitApproval__?.() ?? true);
+                if (!ok) return;
+                return _autoDecryptImpl?.({ ...opts, approvalToken: window.__APPROVAL__?.token });
                 };
             }
         });
 
         Object.defineProperty(window, 'decryptMemoirData', {
             configurable: true,
-            set(fn) { _decryptWithPwdImpl = fn; },
+            set(fn) { _decryptWithPwdImpl = fn; __HAS_DECRYPT_WITH_PWD_IMPL__ = true; },
             get() {
+                if (!__HAS_DECRYPT_WITH_PWD_IMPL__) return undefined;
                 return async (password, extra = {}) => {
-                    // 🚨 修改：如果審核檢查功能不存在，直接執行解密
-                    const ok = await (window.__preInitApproval__?.() ?? true);
-                    if (!ok) return;
-                    return _decryptWithPwdImpl?.(password, { ...extra, approvalToken: window.__APPROVAL__?.token });
+                const ok = await (window.__preInitApproval__?.() ?? true);
+                if (!ok) return;
+                return _decryptWithPwdImpl?.(password, { ...extra, approvalToken: window.__APPROVAL__?.token });
                 };
             }
         });
@@ -504,7 +517,7 @@
 
     <!-- 🔐 解密腳本注入點 - 關鍵！這是解密腳本的注入位置 -->
     
-        <script nonce="49a51b56-d4cd-43b2-92f6-5c1495fff4ac">
+        <script nonce="67e371d4-5594-4938-9da2-5cd8be13da5d">
         // 🔐 MemoirFlow 安全改進版解密系統
         (function() {
             'use strict';
@@ -574,7 +587,7 @@
         
 
     <!-- 安全性增強腳本 -->
-    <script nonce="49a51b56-d4cd-43b2-92f6-5c1495fff4ac">
+    <script nonce="67e371d4-5594-4938-9da2-5cd8be13da5d">
         // 🔐 防止右鍵選單和常見快捷鍵
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
@@ -817,14 +830,14 @@
     </div>
 
     <!-- 數據注入點 -->
-    <script nonce="49a51b56-d4cd-43b2-92f6-5c1495fff4ac">
+    <script nonce="67e371d4-5594-4938-9da2-5cd8be13da5d">
             // 🔒 安全模式：資料將透過安全驗證載入
             console.log('🔒 安全模式初始化');
             window.MEMOIR_DATA = null; // 將由安全驗證後設定
             </script>
 
     <!-- 主要腳本 -->
-    <script nonce="49a51b56-d4cd-43b2-92f6-5c1495fff4ac">
+    <script nonce="67e371d4-5594-4938-9da2-5cd8be13da5d">
         (function() {
             'use strict';
             
@@ -1431,30 +1444,37 @@
             // 🔐 加密檢測和初始化
             function initializeEncryption() {
                 console.log('🔐 初始化加密系統，狀態:', ENCRYPTION_ENABLED);
-                
+
                 if (ENCRYPTION_ENABLED) {
-                    // 檢查是否有解密函數
+                    // 1) 必要函數檢查
                     if (typeof window.decryptMemoirData !== 'function') {
-                        console.error('❌ 缺少解密函數');
-                        showError('系統錯誤：缺少解密組件');
-                        return false;
+                    console.error('❌ 缺少解密函數');
+                    showError('系統錯誤：缺少解密組件');
+                    return false;
                     }
-                    
-                    // 檢查是否需要密碼輸入
+
+                    // 2) 需要密碼
                     if (typeof window.requiresPassword === 'boolean' && window.requiresPassword) {
-                        console.log('🔑 需要密碼驗證');
-                        window.showPasswordPrompt();
-                        return false;
+                    console.log('🔑 需要密碼驗證');
+                    window.showPasswordPrompt();
+                    return false;
                     }
-                    
-                    // 自動解密（後端密鑰模式）
-                    if (typeof window.autoDecrypt === 'function') {
-                        console.log('🔐 嘗試自動解密');
-                        window.autoDecrypt();
-                        return false;
+
+                    // 3) 後端金鑰模式：只有在 autoDecrypt「真的存在」時才呼叫
+                    const tryAuto = typeof window.autoDecrypt === 'function' ? window.autoDecrypt : undefined;
+                    if (tryAuto) {
+                    console.log('🔐 嘗試自動解密');
+                    const t = setTimeout(() => {
+                        // 等太久就給出回饋（避免卡 loading）
+                        showError('解密模組載入逾時，請重整或稍後再試');
+                    }, 6000);
+
+                    Promise.resolve(tryAuto()).finally(() => clearTimeout(t));
+                    return false;
                     }
                 }
-                
+
+                // 不是加密模式或沒有自動解密 → 繼續初始化 App
                 return true;
             }
 
@@ -2885,11 +2905,11 @@
     </script>
     
     <!-- 版權聲明 -->
-    <script nonce="49a51b56-d4cd-43b2-92f6-5c1495fff4ac">
+    <script nonce="67e371d4-5594-4938-9da2-5cd8be13da5d">
         // 綁定重新載入
         document.getElementById('retryBtn')?.addEventListener('click', () => location.reload());
 
-        console.log('%c🔒 生成時間: 2025-08-16T16:40:12.063273+00:00', 'color: #6b7280; font-size: 10px;');
+        console.log('%c🔒 生成時間: 2025-08-16T16:55:07.640913500+00:00', 'color: #6b7280; font-size: 10px;');
         console.log('%c🔐 版權所有 © MemoirFlow (加密版)', 'color: #6b7280; font-size: 10px;');
         console.log('%c🛡️ 此內容受 AES-256-GCM 加密保護', 'color: #10b981; font-size: 10px;');
     </script>
