@@ -32,7 +32,7 @@
     <meta http-equiv="Content-Security-Policy" content="
         default-src 'self';
         img-src 'self' https: data: blob:;
-        script-src 'self' 'nonce-bce1e357-4f2a-455d-8a21-224b4a7bdf1c' https://unpkg.com https://cdnjs.cloudflare.com;
+        script-src 'self' 'nonce-c4cc778e-5c79-4765-927f-aca90e90e953' https://unpkg.com https://cdnjs.cloudflare.com;
         style-src 'self' 'unsafe-inline';
         connect-src 'self' https://mastermaso.com https://mastermaso.com/memoirflow https://unpkg.com;
         base-uri 'self';
@@ -47,7 +47,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'></text></svg>">
 
     <!-- External Libraries -->
-    <script src="https://unpkg.com/lucide@latest" nonce="bce1e357-4f2a-455d-8a21-224b4a7bdf1c"></script>
+    <script src="https://unpkg.com/lucide@latest" nonce="c4cc778e-5c79-4765-927f-aca90e90e953"></script>
 
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -278,7 +278,7 @@
     </div>
 
     <!-- 🚨 修正的審核腳本 - 使用正確的模板變數 -->
-    <script nonce="bce1e357-4f2a-455d-8a21-224b4a7bdf1c">
+    <script nonce="c4cc778e-5c79-4765-927f-aca90e90e953">
         (() => {
             const q = (n) => document.querySelector(n);
             const BACKEND      = q('meta[name="backend-url"]')?.content || 'https://mastermaso.com/memoirflow';
@@ -481,7 +481,7 @@
     </script>
 
     <!-- ✅ 放在 audit/核可程式之後、 DECRYPTION_SCRIPT 之前 -->
-    <script nonce="bce1e357-4f2a-455d-8a21-224b4a7bdf1c">
+    <script nonce="c4cc778e-5c79-4765-927f-aca90e90e953">
         // === 修正版：autoDecrypt 代理 ===
         let _autoDecryptImpl, _decryptWithPwdImpl;
         let __HAS_AUTO_DECRYPT_IMPL__ = false;
@@ -517,7 +517,7 @@
 
     <!-- 🔐 解密腳本注入點 - 關鍵！這是解密腳本的注入位置 -->
     
-        <script nonce="bce1e357-4f2a-455d-8a21-224b4a7bdf1c">
+        <script nonce="c4cc778e-5c79-4765-927f-aca90e90e953">
         // 🔐 MemoirFlow 安全改進版解密系統
         (function() {
             'use strict';
@@ -585,9 +585,64 @@
         })();
         </script>
         
+    <script nonce="c4cc778e-5c79-4765-927f-aca90e90e953">
+        // 交給模板的 autoDecrypt 代理來叫用（可重試）
+        window.autoDecrypt = async function() {
+            try {
+                const encEl = document.getElementById('enc-payload');
+                if (!encEl) throw new Error('找不到 enc-payload');
+                const enc = JSON.parse(encEl.textContent || '{}');
+
+                const { ciphertext_b64, iv_b64, salt_b64, aad } = enc;
+                if (!ciphertext_b64 || !iv_b64 || !salt_b64) throw new Error('密文包欄位不完整');
+
+                // 1) 取得密鑰來源：URL 片段 #k= 或 密碼輸入
+                const params = new URLSearchParams(location.hash.slice(1));
+                let secretBytes;
+                const k = params.get('k'); // 建議用 base64url(32 bytes) 的隨機值
+                if (k) {
+                // base64url → bytes
+                const b64 = k.replace(/-/g, '+').replace(/_/g, '/');
+                const pad = '==='.slice((b64.length + 3) % 4);
+                const raw = atob(b64 + pad);
+                secretBytes = new Uint8Array([...raw].map(c => c.charCodeAt(0)));
+                } else {
+                // 沒有連結密鑰就請使用者輸入密碼（你也可以改成顯示自訂 Modal）
+                const pwd = prompt('請輸入密碼以解鎖');
+                if (!pwd) throw new Error('未提供密鑰或密碼');
+                secretBytes = new TextEncoder().encode(pwd);
+                }
+
+                // 2) PBKDF2 推導 AES-256 金鑰（iterations 可視體感調整）
+                const salt = Uint8Array.from(atob(salt_b64), c => c.charCodeAt(0));
+                const keyMat = await crypto.subtle.importKey('raw', secretBytes, 'PBKDF2', false, ['deriveKey']);
+                const aesKey = await crypto.subtle.deriveKey(
+                { name:'PBKDF2', salt, iterations: 200000, hash:'SHA-256' },
+                keyMat, { name:'AES-GCM', length:256 }, false, ['decrypt']
+                );
+
+                // 3) AES-GCM 解密（與匯出端 AAD 一致的話就填；不需要可拿掉 additionalData）
+                const iv = Uint8Array.from(atob(iv_b64), c => c.charCodeAt(0));
+                const ct = Uint8Array.from(atob(ciphertext_b64), c => c.charCodeAt(0));
+                const algo = aad ? { name:'AES-GCM', iv, additionalData: new TextEncoder().encode(aad) }
+                                : { name:'AES-GCM', iv };
+                const buf = await crypto.subtle.decrypt(algo, aesKey, ct);
+                const data = JSON.parse(new TextDecoder().decode(new Uint8Array(buf)));
+
+                // 4) 觸發模板橋接事件 → 模板會把資料掛到 window.MEMOIR_DATA 並啟動 App
+                window.dispatchEvent(new CustomEvent('memoir:decrypted', { detail: data }));
+                console.log('✅ 解密完成');
+                return true;
+            } catch (e) {
+                console.error('❌ 解密失敗：', e);
+                if (typeof showError === 'function') showError('解密失敗：' + (e.message || e));
+                return false;
+            }
+        };
+    </script>
 
     <!-- 安全性增強腳本 -->
-    <script nonce="bce1e357-4f2a-455d-8a21-224b4a7bdf1c">
+    <script nonce="c4cc778e-5c79-4765-927f-aca90e90e953">
         // 🔐 防止右鍵選單和常見快捷鍵
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
@@ -830,7 +885,7 @@
     </div>
 
     <!-- 等待伺服器解密結果的橋接器（server 模式用） -->
-    <script nonce="bce1e357-4f2a-455d-8a21-224b4a7bdf1c">
+    <script nonce="c4cc778e-5c79-4765-927f-aca90e90e953">
     // 當 server 模式時，先不要啟動 App，等收到解密資料再啟動
     window.__bootApp__ = function bootAppWhenReady() {
         try {
@@ -851,7 +906,7 @@
         }
     });
 
-    // 若是靜態/密碼模式，稍後 <script id="preloaded-memoir-data" type="application/json" nonce="bce1e357-4f2a-455d-8a21-224b4a7bdf1c">null</script> 會直接注入資料 → 這裡也會啟動
+    // 若是靜態/密碼模式，稍後 {{-MEMOIR_DATA_SCRIPT-}} 會直接注入資料 → 這裡也會啟動
     document.addEventListener('DOMContentLoaded', () => {
         // 如果已經有 MEMOIR_DATA（例如密碼模式或預載 JSON），就直接啟動
         if (window.MEMOIR_DATA && window.MEMOIR_DATA.events) {
@@ -861,10 +916,19 @@
     </script>
 
     <!-- 數據注入點 -->
-    <script id="preloaded-memoir-data" type="application/json" nonce="bce1e357-4f2a-455d-8a21-224b4a7bdf1c">null</script>
+    <script id="preloaded-memoir-data" type="application/json" nonce="c4cc778e-5c79-4765-927f-aca90e90e953">null</script>
+    <script id="enc-payload" type="application/json" nonce="c4cc778e-5c79-4765-927f-aca90e90e953">
+        {
+            "ciphertext_b64": "{{CIPHERTEXT_B64}}",
+            "iv_b64": "{{IV_B64}}",
+            "wrapped_key_b64": "{{WRAPPED_KEY_B64}}",
+            "aad": "bd9134d103e0817f"
+        }
+    </script>
+
 
     <!-- 主要腳本 -->
-    <script nonce="bce1e357-4f2a-455d-8a21-224b4a7bdf1c">
+    <script nonce="c4cc778e-5c79-4765-927f-aca90e90e953">
         (function() {
             'use strict';
             
@@ -3018,11 +3082,11 @@
     </script>
     
     <!-- 版權聲明 -->
-    <script nonce="bce1e357-4f2a-455d-8a21-224b4a7bdf1c">
+    <script nonce="c4cc778e-5c79-4765-927f-aca90e90e953">
         // 綁定重新載入
         document.getElementById('retryBtn')?.addEventListener('click', () => location.reload());
 
-        console.log('%c🔒 生成時間: 2025-08-16T18:02:31.717654800+00:00', 'color: #6b7280; font-size: 10px;');
+        console.log('%c🔒 生成時間: 2025-08-16T19:52:11.776849+00:00', 'color: #6b7280; font-size: 10px;');
         console.log('%c🔐 版權所有 © MemoirFlow (加密版)', 'color: #6b7280; font-size: 10px;');
         console.log('%c🛡️ 此內容受 AES-256-GCM 加密保護', 'color: #10b981; font-size: 10px;');
     </script>
