@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>台灣大罷免運動始末</title>
-    <meta name="description" content="台灣大罷免運動始末 - 個人回憶錄">
-    <meta name="author" content="MemoirFlow">
+    <meta name="description" content="台灣大罷免運動始末 - 安全保護版 - 個人回憶錄">
+    <meta name="author" content="MemoirFlow Security">
     <meta name="generator" content="MemoirFlow">
 
     <!-- 🔐 加密標記 - 必要元件 -->
     <meta name="memoir-encryption" content="true">
-    <meta name="encryption-mode" content="fallback">
+    <meta name="encryption-mode" content="secure">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -32,7 +32,7 @@
     <meta http-equiv="Content-Security-Policy" content="
         default-src 'self';
         img-src 'self' https: data: blob:;
-        script-src 'self' 'nonce-457b97c8-60d4-40c4-a4ef-ae617f166f28' https://unpkg.com https://cdnjs.cloudflare.com;
+        script-src 'self' 'nonce-664cc740-5655-4744-bc86-d2e00e0fd9b7' https://unpkg.com https://cdnjs.cloudflare.com;
         style-src 'self' 'unsafe-inline';
         connect-src 'self' https://mastermaso.com https://mastermaso.com/memoirflow https://unpkg.com;
         base-uri 'self';
@@ -47,7 +47,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'></text></svg>">
 
     <!-- External Libraries -->
-    <script src="https://unpkg.com/lucide@latest" nonce="457b97c8-60d4-40c4-a4ef-ae617f166f28"></script>
+    <script src="https://unpkg.com/lucide@latest" nonce="664cc740-5655-4744-bc86-d2e00e0fd9b7"></script>
 
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -278,7 +278,7 @@
     </div>
 
     <!-- 🚨 修正的審核腳本 - 使用正確的模板變數 -->
-    <script nonce="457b97c8-60d4-40c4-a4ef-ae617f166f28">
+    <script nonce="664cc740-5655-4744-bc86-d2e00e0fd9b7">
         (() => {
             const q = (n) => document.querySelector(n);
             const BACKEND      = q('meta[name="backend-url"]')?.content || 'https://mastermaso.com/memoirflow';
@@ -469,228 +469,8 @@
         })();
     </script>
 
-    <!-- ✅ 放在 audit/核可程式之後、
-        <script nonce="457b97c8-60d4-40c4-a4ef-ae617f166f28">
-        // 🔐 MemoirFlow 統一前端解密系統 - 修正版本
-        (function() {
-            'use strict';
-            
-            console.log('🔐 解密腳本開始載入...');
-            
-            // 🚨 檢查並避免重複初始化
-            if (window.MemoirFlowDecryptionSystem) {
-                console.warn('⚠️ 解密系統已初始化，跳過重複載入');
-                return;
-            }
-            
-            // 🚨 強制覆蓋標記
-            window.MemoirFlowDecryptionSystem = true;
-            
-            // 🚨 確保全域變數正確初始化
-            window.MemoirFlowGlobals = window.MemoirFlowGlobals || {
-                MEMOIR_DATA: null,
-                decryptionAttempts: 0,
-                MAX_ATTEMPTS: 3,
-                isInitialized: false,
-                decryptionMode: null,
-                debugInfo: {}
-            };
-            
-            const globals = window.MemoirFlowGlobals;
-            
-            // 🚨 模式特定的解密邏輯
-            
-            // 🌐 伺服器端解密模式 - 修正版本
-            globals.decryptionMode = 'backend';
-            globals.BACKEND_URL = 'https://mastermaso.com/memoirflow';
-            
-            const memoirId = '20ea6cb4-633b-4ed8-9f4a-5d37f1de6f4b';
-            const accessToken = 'MjBlYTZjYjQtNjMzYi00ZWQ4LTlmNGEtNWQzN2YxZGU2ZjRiOjE3NTU0MzQ4NTg6ZjUyYWJjMzQwMGQ0MWU2YjA2MTc0NTJhM2FkZTQ3ZWYxYmRlZDZiMmZiMmVhOTg0YmQyMjRlNDI2YzFlN2NjZA==';
-
-            if (!memoirId || !accessToken) {
-                console.error('❌ 伺服器端資料格式錯誤');
-                window.MemoirFlowUtils.showDecryptionError('伺服器端資料格式錯誤');
-                return;
-            }
-
-            // 伺服器端解密函式
-            window.decryptMemoirData = async function() {
-                try {
-                    console.log('🌐 從伺服器端解密回憶錄...', memoirId);
-                    
-                    const response = await fetch(`${globals.BACKEND_URL}/api/decrypt/decrypt`, {
-                        method: 'POST',
-                        headers: { 
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json',
-                            'User-Agent': 'MemoirFlow-Web/1.0'
-                        },
-                        body: JSON.stringify({ 
-                            memoir_id: memoirId,
-                            access_token: accessToken
-                        })
-                    });
-                    
-                    if (!response.ok) {
-                        throw new Error(`伺服器端解密失敗: ${response.status} ${response.statusText}`);
-                    }
-                    
-                    const result = await response.json();
-                    console.log('✅ 伺服器端解密成功');
-                    
-                    if (!result.success || !result.memoir_data) {
-                        throw new Error('伺服器回應格式錯誤或缺少解密內容');
-                    }
-                    
-                    const memoirData = result.memoir_data;
-                    
-                    // 🚨 驗證解密後的數據
-                    if (!memoirData || typeof memoirData !== 'object') {
-                        throw new Error('解密後的數據格式無效');
-                    }
-                    
-                    // 🚨 媒體路徑修正
-                    if (memoirData.events && Array.isArray(memoirData.events)) {
-                        console.log('🎬 修正媒體路徑...');
-                        memoirData.events.forEach(function(event) {
-                            if (event.media && Array.isArray(event.media)) {
-                                event.media.forEach(function(media) {
-                                    if (media.path && !media.path.startsWith('http')) {
-                                        if (!media.path.startsWith('./media/')) {
-                                            const filename = media.path.split('/').pop() || media.filename;
-                                            media.path = './media/' + filename;
-                                        }
-                                    }
-                                });
-                            }
-                        });
-                    }
-                    
-                    // 設定到全域變數
-                    globals.MEMOIR_DATA = memoirData;
-                    window.MEMOIR_DATA = memoirData;
-                    
-                    console.log('✅ 伺服器端解密完成，資料已載入:', memoirData.chineseName || memoirData.chinese_name);
-                    
-                    // 初始化應用程式
-                    window.MemoirFlowUtils.initializeApp();
-                    return true;
-                    
-                } catch (error) {
-                    console.error('❌ 伺服器端解密失敗:', error);
-                    
-                    // 🚨 改善錯誤訊息
-                    let errorMessage = '無法從伺服器載入內容';
-                    if (error.message.includes('404')) {
-                        errorMessage = '回憶錄已過期或不存在，請聯繫作者重新部署';
-                    } else if (error.message.includes('403')) {
-                        errorMessage = '存取權限已過期，請聯繫作者';
-                    } else if (error.message.includes('Failed to fetch')) {
-                        errorMessage = '無法連接到解密伺服器，請檢查網路連接';
-                    } else {
-                        errorMessage += ': ' + error.message;
-                    }
-                    
-                    window.MemoirFlowUtils.showDecryptionError(errorMessage);
-                    return false;
-                }
-            };
-            
-            console.log('✅ 伺服器端解密邏輯載入完成');
-        
-            
-            // 🚨 工具函式
-            if (!window.MemoirFlowUtils) {
-                window.MemoirFlowUtils = {
-                    initializeApp: function() {
-                        console.log('🚀 MemoirFlowUtils 初始化應用程式');
-                        
-                        const loadingScreen = document.getElementById('loadingScreen');
-                        const passwordModal = document.getElementById('passwordModal');
-                        const app = document.getElementById('app');
-                        
-                        if (loadingScreen) loadingScreen.classList.add('hidden');
-                        if (passwordModal) passwordModal.classList.add('hidden');
-                        if (app) app.classList.remove('hidden');
-                        
-                        // 🚨 確保數據正確設定到全域
-                        if (globals.MEMOIR_DATA) {
-                            window.MEMOIR_DATA = globals.MEMOIR_DATA;
-                            console.log('✅ MEMOIR_DATA 已設定到全域變數');
-                        }
-                        
-                        // 嘗試呼叫範本中的初始化函式
-                        if (typeof window.initializeMemoirApp === 'function') {
-                            window.initializeMemoirApp();
-                        } else if (typeof initializeApp === 'function') {
-                            initializeApp();
-                        } else {
-                            console.warn('⚠️ 找不到初始化函數，但繼續執行');
-                        }
-                        
-                        globals.isInitialized = true;
-                    },
-                    
-                    showDecryptionError: function(message) {
-                        console.error('❌ 解密錯誤:', message);
-                        
-                        const errorDiv = document.createElement('div');
-                        errorDiv.className = 'decryption-error';
-                        errorDiv.style.cssText = `
-                            position: fixed;
-                            inset: 0;
-                            background: linear-gradient(135deg, #1a1a2e, #16213e);
-                            display: flex;
-                            flex-direction: column;
-                            align-items: center;
-                            justify-content: center;
-                            z-index: 10000;
-                            text-align: center;
-                            padding: 20px;
-                            color: white;
-                        `;
-                        errorDiv.innerHTML = `
-                            <div style="font-size: 80px; margin-bottom: 30px; color: #ef4444;">❌</div>
-                            <h1 style="font-size: 32px; font-weight: bold; margin-bottom: 20px;">解密失敗</h1>
-                            <p style="font-size: 18px; margin-bottom: 30px; max-width: 600px; line-height: 1.6; color: #9ca3af;">
-                                ${message}
-                            </p>
-                            <button onclick="location.reload()" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); 
-                                    color: white; border: none; padding: 16px 32px; border-radius: 12px; font-size: 18px; 
-                                    font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);">
-                                🔄 重新載入
-                            </button>
-                        `;
-                        document.body.appendChild(errorDiv);
-                    }
-                };
-            }
-            
-            // 🚨 確保在下一個事件循環中執行初始化
-            setTimeout(function() {
-                console.log('🔐 開始自動解密流程');
-                if (typeof window.decryptMemoirData === 'function') {
-                    try {
-                        window.decryptMemoirData().catch(function(error) {
-                            console.error('❌ 自動解密失敗:', error);
-                            window.MemoirFlowUtils.showDecryptionError('自動解密失敗: ' + error.message);
-                        });
-                    } catch (syncError) {
-                        console.error('❌ 解密函數執行失敗:', syncError);
-                        window.MemoirFlowUtils.showDecryptionError('解密函數執行失敗: ' + syncError.message);
-                    }
-                } else {
-                    console.error('❌ decryptMemoirData 函式未定義');
-                    window.MemoirFlowUtils.showDecryptionError('解密函式載入失敗');
-                }
-            }, 100);
-            
-            console.log('✅ 解密腳本載入完成');
-            
-        })();
-        </script>
-         之前 -->
-    <script nonce="457b97c8-60d4-40c4-a4ef-ae617f166f28">
+    <!-- ✅ 放在 audit/核可程式之後、 DECRYPTION_SCRIPT 之前 -->
+    <script nonce="664cc740-5655-4744-bc86-d2e00e0fd9b7">
         // 🚨 修改：簡化代理邏輯，確保與新的解密系統兼容
         let _autoDecryptImpl, _decryptWithPwdImpl;
 
@@ -724,229 +504,142 @@
 
     <!-- 🔐 解密腳本注入點 - 關鍵！這是解密腳本的注入位置 -->
     
-        <script nonce="457b97c8-60d4-40c4-a4ef-ae617f166f28">
-        // 🔐 MemoirFlow 統一前端解密系統 - 修正版本
+        <script nonce="&#123;&#123;NONCE&#125;&#125;">
+        // 🔐 MemoirFlow 安全改進版解密系統
         (function() {
             'use strict';
             
-            console.log('🔐 解密腳本開始載入...');
+            console.log('🔐 安全解密腳本載入中...');
             
-            // 🚨 檢查並避免重複初始化
+            // 🔒 安全改進：更嚴格的重複檢查
             if (window.MemoirFlowDecryptionSystem) {
-                console.warn('⚠️ 解密系統已初始化，跳過重複載入');
+                console.warn('⚠️ 解密系統已載入，拒絕重複初始化');
                 return;
             }
             
-            // 🚨 強制覆蓋標記
-            window.MemoirFlowDecryptionSystem = true;
+            // 🔒 安全改進：防篡改標記
+            Object.defineProperty(window, 'MemoirFlowDecryptionSystem', {
+                value: true,
+                writable: false,
+                configurable: false
+            });
             
-            // 🚨 確保全域變數正確初始化
-            window.MemoirFlowGlobals = window.MemoirFlowGlobals || {
+            // 🔒 安全改進：限制全域變數存取
+            const secureGlobals = {
                 MEMOIR_DATA: null,
                 decryptionAttempts: 0,
                 MAX_ATTEMPTS: 3,
                 isInitialized: false,
-                decryptionMode: null,
-                debugInfo: {}
+                lastAccessTime: Date.now(),
+                securityToken: Math.random().toString(36)
             };
             
-            const globals = window.MemoirFlowGlobals;
+            // 🔒 安全改進：不暴露到 window
+            // window.MemoirFlowGlobals = secureGlobals; // ❌ 移除這行
             
-            // 🚨 模式特定的解密邏輯
             
-            // 🌐 伺服器端解密模式 - 修正版本
-            globals.decryptionMode = 'backend';
-            globals.BACKEND_URL = 'https://mastermaso.com/memoirflow';
+            // 🖥️ 伺服器端渲染模式（無客戶端解密）
+            console.log('🖥️ 載入伺服器端渲染模式');
             
-            const memoirId = '20ea6cb4-633b-4ed8-9f4a-5d37f1de6f4b';
-            const accessToken = 'MjBlYTZjYjQtNjMzYi00ZWQ4LTlmNGEtNWQzN2YxZGU2ZjRiOjE3NTU0MzQ4NTg6ZjUyYWJjMzQwMGQ0MWU2YjA2MTc0NTJhM2FkZTQ3ZWYxYmRlZDZiMmZiMmVhOTg0YmQyMjRlNDI2YzFlN2NjZA==';
-
-            if (!memoirId || !accessToken) {
-                console.error('❌ 伺服器端資料格式錯誤');
-                window.MemoirFlowUtils.showDecryptionError('伺服器端資料格式錯誤');
-                return;
-            }
-
-            // 伺服器端解密函式
+            secureGlobals.decryptionMode = 'server_render';
+            
+            // 🔒 此模式下不需要客戶端解密
             window.decryptMemoirData = async function() {
-                try {
-                    console.log('🌐 從伺服器端解密回憶錄...', memoirId);
-                    
-                    const response = await fetch(`${globals.BACKEND_URL}/api/decrypt/decrypt`, {
-                        method: 'POST',
-                        headers: { 
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json',
-                            'User-Agent': 'MemoirFlow-Web/1.0'
-                        },
-                        body: JSON.stringify({ 
-                            memoir_id: memoirId,
-                            access_token: accessToken
-                        })
-                    });
-                    
-                    if (!response.ok) {
-                        throw new Error(`伺服器端解密失敗: ${response.status} ${response.statusText}`);
+                console.log('🖥️ 內容已由伺服器端預先渲染');
+                
+                // 檢查是否有預先載入的資料
+                const preloadedData = document.getElementById('preloaded-memoir-data');
+                if (preloadedData && preloadedData.textContent) {
+                    try {
+                        const memoirData = JSON.parse(preloadedData.textContent);
+                        secureGlobals.MEMOIR_DATA = memoirData;
+                        secureUtils.initializeApp();
+                        return true;
+                    } catch (e) {
+                        console.error('❌ 預載資料解析失敗');
                     }
-                    
-                    const result = await response.json();
-                    console.log('✅ 伺服器端解密成功');
-                    
-                    if (!result.success || !result.memoir_data) {
-                        throw new Error('伺服器回應格式錯誤或缺少解密內容');
-                    }
-                    
-                    const memoirData = result.memoir_data;
-                    
-                    // 🚨 驗證解密後的數據
-                    if (!memoirData || typeof memoirData !== 'object') {
-                        throw new Error('解密後的數據格式無效');
-                    }
-                    
-                    // 🚨 媒體路徑修正
-                    if (memoirData.events && Array.isArray(memoirData.events)) {
-                        console.log('🎬 修正媒體路徑...');
-                        memoirData.events.forEach(function(event) {
-                            if (event.media && Array.isArray(event.media)) {
-                                event.media.forEach(function(media) {
-                                    if (media.path && !media.path.startsWith('http')) {
-                                        if (!media.path.startsWith('./media/')) {
-                                            const filename = media.path.split('/').pop() || media.filename;
-                                            media.path = './media/' + filename;
-                                        }
-                                    }
-                                });
-                            }
-                        });
-                    }
-                    
-                    // 設定到全域變數
-                    globals.MEMOIR_DATA = memoirData;
-                    window.MEMOIR_DATA = memoirData;
-                    
-                    console.log('✅ 伺服器端解密完成，資料已載入:', memoirData.chineseName || memoirData.chinese_name);
-                    
-                    // 初始化應用程式
-                    window.MemoirFlowUtils.initializeApp();
-                    return true;
-                    
-                } catch (error) {
-                    console.error('❌ 伺服器端解密失敗:', error);
-                    
-                    // 🚨 改善錯誤訊息
-                    let errorMessage = '無法從伺服器載入內容';
-                    if (error.message.includes('404')) {
-                        errorMessage = '回憶錄已過期或不存在，請聯繫作者重新部署';
-                    } else if (error.message.includes('403')) {
-                        errorMessage = '存取權限已過期，請聯繫作者';
-                    } else if (error.message.includes('Failed to fetch')) {
-                        errorMessage = '無法連接到解密伺服器，請檢查網路連接';
-                    } else {
-                        errorMessage += ': ' + error.message;
-                    }
-                    
-                    window.MemoirFlowUtils.showDecryptionError(errorMessage);
-                    return false;
                 }
+                
+                // 如果沒有預載資料，顯示錯誤
+                secureUtils.showDecryptionError('內容載入失敗，請重新整理頁面');
+                return false;
             };
             
-            console.log('✅ 伺服器端解密邏輯載入完成');
+            console.log('✅ 伺服器端渲染模式載入完成');
         
             
-            // 🚨 工具函式
-            if (!window.MemoirFlowUtils) {
-                window.MemoirFlowUtils = {
-                    initializeApp: function() {
-                        console.log('🚀 MemoirFlowUtils 初始化應用程式');
-                        
-                        const loadingScreen = document.getElementById('loadingScreen');
-                        const passwordModal = document.getElementById('passwordModal');
-                        const app = document.getElementById('app');
-                        
-                        if (loadingScreen) loadingScreen.classList.add('hidden');
-                        if (passwordModal) passwordModal.classList.add('hidden');
-                        if (app) app.classList.remove('hidden');
-                        
-                        // 🚨 確保數據正確設定到全域
-                        if (globals.MEMOIR_DATA) {
-                            window.MEMOIR_DATA = globals.MEMOIR_DATA;
-                            console.log('✅ MEMOIR_DATA 已設定到全域變數');
-                        }
-                        
-                        // 嘗試呼叫範本中的初始化函式
-                        if (typeof window.initializeMemoirApp === 'function') {
-                            window.initializeMemoirApp();
-                        } else if (typeof initializeApp === 'function') {
-                            initializeApp();
-                        } else {
-                            console.warn('⚠️ 找不到初始化函數，但繼續執行');
-                        }
-                        
-                        globals.isInitialized = true;
-                    },
+            // 🔒 安全改進：安全工具函式
+            const secureUtils = {
+                initializeApp: function() {
+                    console.log('🚀 安全模式初始化應用程式');
                     
-                    showDecryptionError: function(message) {
-                        console.error('❌ 解密錯誤:', message);
-                        
-                        const errorDiv = document.createElement('div');
-                        errorDiv.className = 'decryption-error';
-                        errorDiv.style.cssText = `
-                            position: fixed;
-                            inset: 0;
-                            background: linear-gradient(135deg, #1a1a2e, #16213e);
-                            display: flex;
-                            flex-direction: column;
-                            align-items: center;
-                            justify-content: center;
-                            z-index: 10000;
-                            text-align: center;
-                            padding: 20px;
-                            color: white;
-                        `;
-                        errorDiv.innerHTML = `
-                            <div style="font-size: 80px; margin-bottom: 30px; color: #ef4444;">❌</div>
-                            <h1 style="font-size: 32px; font-weight: bold; margin-bottom: 20px;">解密失敗</h1>
-                            <p style="font-size: 18px; margin-bottom: 30px; max-width: 600px; line-height: 1.6; color: #9ca3af;">
-                                ${message}
-                            </p>
-                            <button onclick="location.reload()" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); 
-                                    color: white; border: none; padding: 16px 32px; border-radius: 12px; font-size: 18px; 
-                                    font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);">
-                                🔄 重新載入
-                            </button>
-                        `;
-                        document.body.appendChild(errorDiv);
+                    const loadingScreen = document.getElementById('loadingScreen');
+                    const passwordModal = document.getElementById('passwordModal');
+                    const app = document.getElementById('app');
+                    
+                    if (loadingScreen) loadingScreen.classList.add('hidden');
+                    if (passwordModal) passwordModal.classList.add('hidden');
+                    if (app) app.classList.remove('hidden');
+                    
+                    // 🔒 安全改進：限制資料存取
+                    if (secureGlobals.MEMOIR_DATA) {
+                        // 只設定必要的資料，不完全暴露
+                        window.MEMOIR_DATA = {
+                            chineseName: secureGlobals.MEMOIR_DATA.chineseName,
+                            events: secureGlobals.MEMOIR_DATA.events,
+                            // 🔒 不暴露敏感資訊
+                        };
+                        console.log('✅ 應用程式資料已安全載入');
                     }
-                };
-            }
-            
-            // 🚨 確保在下一個事件循環中執行初始化
-            setTimeout(function() {
-                console.log('🔐 開始自動解密流程');
-                if (typeof window.decryptMemoirData === 'function') {
-                    try {
-                        window.decryptMemoirData().catch(function(error) {
-                            console.error('❌ 自動解密失敗:', error);
-                            window.MemoirFlowUtils.showDecryptionError('自動解密失敗: ' + error.message);
-                        });
-                    } catch (syncError) {
-                        console.error('❌ 解密函數執行失敗:', syncError);
-                        window.MemoirFlowUtils.showDecryptionError('解密函數執行失敗: ' + syncError.message);
+                    
+                    if (typeof window.initializeMemoirApp === 'function') {
+                        window.initializeMemoirApp();
                     }
-                } else {
-                    console.error('❌ decryptMemoirData 函式未定義');
-                    window.MemoirFlowUtils.showDecryptionError('解密函式載入失敗');
+                    
+                    secureGlobals.isInitialized = true;
+                    secureGlobals.lastAccessTime = Date.now();
+                },
+                
+                showDecryptionError: function(message) {
+                    console.error('❌ 解密錯誤:', message);
+                    
+                    // 🔒 安全改進：記錄錯誤嘗試
+                    secureGlobals.decryptionAttempts++;
+                    
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'decryption-error';
+                    errorDiv.style.cssText = `
+                        position: fixed; inset: 0; background: linear-gradient(135deg, #1a1a2e, #16213e);
+                        display: flex; flex-direction: column; align-items: center; justify-content: center;
+                        z-index: 10000; text-align: center; padding: 20px; color: white;
+                    `;
+                    errorDiv.innerHTML = `
+                        <div style="font-size: 80px; margin-bottom: 30px; color: #ef4444;">🔒</div>
+                        <h1 style="font-size: 32px; font-weight: bold; margin-bottom: 20px;">存取受限</h1>
+                        <p style="font-size: 18px; margin-bottom: 30px; max-width: 600px; line-height: 1.6; color: #9ca3af;">
+                            ${message}
+                        </p>
+                        <button onclick="location.reload()" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); 
+                                color: white; border: none; padding: 16px 32px; border-radius: 12px; font-size: 18px; 
+                                font-weight: 600; cursor: pointer;">
+                            🔄 重新載入
+                        </button>
+                    `;
+                    document.body.appendChild(errorDiv);
                 }
-            }, 100);
+            };
             
-            console.log('✅ 解密腳本載入完成');
+            // 🔒 安全改進：不暴露工具函式到全域
+            window.MemoirFlowUtils = secureUtils;
+            
+            console.log('✅ 安全解密腳本載入完成');
             
         })();
         </script>
         
 
     <!-- 安全性增強腳本 -->
-    <script nonce="457b97c8-60d4-40c4-a4ef-ae617f166f28">
+    <script nonce="664cc740-5655-4744-bc86-d2e00e0fd9b7">
         // 🔐 防止右鍵選單和常見快捷鍵
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
@@ -1189,14 +882,14 @@
     </div>
 
     <!-- 數據注入點 -->
-    <script nonce="457b97c8-60d4-40c4-a4ef-ae617f166f28">
-            // 🔐 加密模式：數據將透過解密腳本載入
-            console.log('🔐 加密模式初始化');
-            window.MEMOIR_DATA = null; // 將由解密腳本設定
+    <script nonce="664cc740-5655-4744-bc86-d2e00e0fd9b7">
+            // 🔒 安全模式：資料將透過安全驗證載入
+            console.log('🔒 安全模式初始化');
+            window.MEMOIR_DATA = null; // 將由安全驗證後設定
             </script>
 
     <!-- 主要腳本 -->
-    <script nonce="457b97c8-60d4-40c4-a4ef-ae617f166f28">
+    <script nonce="664cc740-5655-4744-bc86-d2e00e0fd9b7">
         (function() {
             'use strict';
             
@@ -3257,11 +2950,11 @@
     </script>
     
     <!-- 版權聲明 -->
-    <script nonce="457b97c8-60d4-40c4-a4ef-ae617f166f28">
+    <script nonce="664cc740-5655-4744-bc86-d2e00e0fd9b7">
         // 綁定重新載入
         document.getElementById('retryBtn')?.addEventListener('click', () => location.reload());
 
-        console.log('%c🔒 生成時間: 2025-08-16T12:47:39.503757300+00:00', 'color: #6b7280; font-size: 10px;');
+        console.log('%c🔒 生成時間: 2025-08-16T14:16:20.452330500+00:00', 'color: #6b7280; font-size: 10px;');
         console.log('%c🔐 版權所有 © MemoirFlow (加密版)', 'color: #6b7280; font-size: 10px;');
         console.log('%c🛡️ 此內容受 AES-256-GCM 加密保護', 'color: #10b981; font-size: 10px;');
     </script>
