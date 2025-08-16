@@ -696,7 +696,7 @@ body {
 .settings-menu{
   display: none;
   position: fixed;            /* 變成懸浮視窗 */
-  z-index: 10000;
+  z-index: 11000;
   left: 12px; top: 72px;
   width: min(340px, calc(100vw - 24px));
   padding: 12px;
@@ -720,6 +720,28 @@ body {
 
   /* 避免與背後內容混合造成怪異效果 */
   isolation: isolate;
+}
+
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.settings-close {
+    background: transparent;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+.settings-close:hover {
+    background: rgba(255,255,255,0.1);
+    color: #f87171;
 }
 
 /* 顯示狀態 */
@@ -1512,12 +1534,13 @@ body {
 .media-viewer {
     position: fixed;
     inset: 0;
-    background: black;
+    background: rgba(0, 0, 0, 0.8); /* 黑色半透明背景 */
     z-index: 50;
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
+    z-index: 10000;
     pointer-events: none;
     transition: opacity 0.3s ease;
 }
